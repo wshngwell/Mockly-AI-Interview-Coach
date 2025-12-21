@@ -8,7 +8,7 @@ import com.example.interviewaicoach.data.local.dbModels.QuestionWithAnswerDbMode
 
 @Database(
     entities = [QuestionWithAnswerDbModel::class],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class QuestionsDataBase : RoomDatabase() {
@@ -32,7 +32,6 @@ abstract class QuestionsDataBase : RoomDatabase() {
                     klass = QuestionsDataBase::class.java,
                     name = DB_NAME
                 )
-                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = questionsDataBase
                 return questionsDataBase

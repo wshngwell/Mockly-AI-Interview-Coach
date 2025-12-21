@@ -41,7 +41,7 @@ class MyOkHttpClient(
 
     private fun getUnsafe(): OkHttpClient {
         return try {
-            // Create a trust manager that does not validate certificate chains
+
             val trustAllCerts = arrayOf<TrustManager>(
                 object : X509TrustManager {
                     @Throws(CertificateException::class)
@@ -64,10 +64,8 @@ class MyOkHttpClient(
                 }
             )
 
-            // Install the all-trusting trust manager
             val sslContext = SSLContext.getInstance("SSL")
             sslContext.init(null, trustAllCerts, SecureRandom())
-            // Create an ssl socket factory with our all-trusting manager
             val sslSocketFactory = sslContext.socketFactory
             val trustManagerFactory: TrustManagerFactory =
                 TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())

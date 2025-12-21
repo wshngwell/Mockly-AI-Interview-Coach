@@ -8,7 +8,6 @@ import kotlinx.coroutines.withContext
 class LoadCorrectAnswerUseCase(
     private val answerRepository: AnswerRepository
 ) {
-    suspend operator fun invoke(questionEntity: QuestionEntity) = withContext(Dispatchers.IO) {
+     operator fun invoke(questionEntity: QuestionEntity) =
         answerRepository.loadCorrectAnswer(questionEntity)
-    }
 }

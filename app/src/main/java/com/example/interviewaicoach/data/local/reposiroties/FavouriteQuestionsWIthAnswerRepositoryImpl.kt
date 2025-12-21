@@ -40,15 +40,18 @@ class FavouriteQuestionsWIthAnswerRepositoryImpl(
                 replay = 1
             )
 
-    override suspend fun addToFavouriteQuestionWithAnswer(questionWithAnswerEntity: QuestionWithAnswerEntity) =
+    override suspend fun addToFavouriteQuestionWithAnswer(
+        questionWithAnswerEntity: QuestionWithAnswerEntity,
+        isSavedByUser: Boolean,
+    ) =
         withContext(Dispatchers.IO) {
             questionsWithAnswersDao.addQuestionWithAnswerToDb(
-                questionWithAnswerEntity.toQuestionWithAnswerDbModel()
+                questionWithAnswerEntity.toQuestionWithAnswerDbModel(isSavedByUser)
             )
         }
 
-    override suspend fun deleteFromFavouriteQuestionWithAnswer(questionId: String) =
+    override suspend fun deleteFromFavouriteQuestionWithAnswer(questionName: String) =
         withContext(Dispatchers.IO) {
-            questionsWithAnswersDao.deleteQuestionWithAnswerFromDb(questionId)
+            questionsWithAnswersDao.deleteQuestionWithAnswerFromDb(questionName)
         }
 }

@@ -10,12 +10,12 @@ fun Throwable.parseToLoadingException(): LoadingException {
     myLog(this.stackTraceToString())
 
     return when (this) {
-        is HttpException -> LoadingException.HttpError(this)
+        is HttpException -> LoadingException.HttpError()
 
-        is IOException -> LoadingException.NetworkError(this)
+        is IOException -> LoadingException.NetworkError()
 
         is LoadingException -> this
 
-        else -> LoadingException.OtherError(this)
+        else -> LoadingException.OtherError()
     }
 }

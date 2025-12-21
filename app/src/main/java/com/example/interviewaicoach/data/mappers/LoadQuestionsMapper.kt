@@ -1,48 +1,51 @@
 package com.example.interviewaicoach.data.mappers
 
-import com.example.interviewaicoach.data.mappers.MapperConsts.AI_MODEL_NAME
+import com.example.interviewaicoach.data.local.dbModels.QuestionWithAnswerDbModel
+import com.example.interviewaicoach.data.mappers.MapperConsts.AI_MODEL_NAME_FOR_TEXT
 import com.example.interviewaicoach.data.mappers.MapperConsts.SYSTEM_ROLE_NAME
 import com.example.interviewaicoach.data.mappers.MapperConsts.USER_ROLE_NAME
-import com.example.interviewaicoach.data.remote.dto.ChatMessageDto
-import com.example.interviewaicoach.data.remote.dto.ChatRequestDto
-import com.example.interviewaicoach.data.remote.dto.ChatResponseDto
-import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.GradeEntity
+import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatMessageForTextDto
+import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatRequestTextDto
+import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatStreamChunkDto
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
+import com.example.interviewaicoach.presentation.GsonUtil.fromJson
 
-fun ChatResponseDto.mapToQuestionEntity(
+fun String.mapToQuestionEntity(
     categoryName: String,
-    gradeEntity: GradeEntity,
+    gradeName: String,
 ) =
     runCatching {
         parseSingleQuestion(
-            gradeEntity,
+            gradeName,
             categoryName,
-            choices[0].message!!.content!!
+            this
         )
     }.getOrElse {
         QuestionEntity(
             questionContent = "",
             categoryName = categoryName,
-            gradeEntity = gradeEntity
+            gradeName = gradeName,
+            questionTopic = ""
         )
     }
 
+
 fun mapCategoryWithGradeToChatRequestForQuestion(
     categoryName: String,
-    gradeEntity: GradeEntity,
+    gradeName: String,
     savedBySystemQuestions: List<String>,
-) = ChatRequestDto(
-    model = AI_MODEL_NAME,
+) = ChatRequestTextDto(
+    model = AI_MODEL_NAME_FOR_TEXT,
     messages = listOf(
-        ChatMessageDto(
+        ChatMessageForTextDto(
             role = SYSTEM_ROLE_NAME,
             content = makeSystemPromptOneQuestion(
                 directionInIT = categoryName,
-                grade = gradeEntity.name
+                grade = gradeName
             )
         ),
 
-        ChatMessageDto(
+        ChatMessageForTextDto(
             role = USER_ROLE_NAME,
             content = makeUserPromptForNewQuestion(savedBySystemQuestions)
         )
@@ -50,61 +53,70 @@ fun mapCategoryWithGradeToChatRequestForQuestion(
 )
 
 fun parseSingleQuestion(
-    gradeEntity: GradeEntity,
+    gradeName: String,
     categoryName: String,
     text: String
 ): QuestionEntity {
+    val lines = text.split("\n").map { it.trim() }
+    val topicIndex = lines.indexOfFirst { it.isNotEmpty() }
 
-    val regex = Regex("""Вопрос:\s*(.+)$""", setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
-
-    return when (val match = regex.find(text.trim())) {
-        null -> QuestionEntity(
+    if (topicIndex == -1) {
+        return QuestionEntity(
+            questionTopic = "",
             questionContent = "",
             categoryName = categoryName,
-            gradeEntity = gradeEntity
-        )
-
-        else -> QuestionEntity(
-            questionContent = match.groupValues[1].trim(),
-            categoryName = categoryName,
-            gradeEntity = gradeEntity
+            gradeName = gradeName
         )
     }
+
+    val topic = lines[topicIndex]
+    val contentLines = lines.drop(topicIndex + 1).filter { it.isNotEmpty() }
+
+    val content = if (contentLines.isEmpty()) {
+        ""
+    } else {
+        contentLines.joinToString(" ")
+    }
+
+    return QuestionEntity(
+        questionTopic = topic,
+        questionContent = content,
+        categoryName = categoryName,
+        gradeName = gradeName
+    )
 }
 
 fun makeSystemPromptOneQuestion(directionInIT: String, grade: String) = """
-    Ты — эксперт по подготовке к собеседованиям в IT.
-    Пользователь выбрал направление: $directionInIT.
+    Ты — эксперт по подготовке к собеседованиям в выбранной профессиональной сфере.
+    Выбранное направление: $directionInIT.
     Уровень позиции (грейд): $grade.
-    
-    Твоя задача — сгенерировать РОВНО ОДИН реальный, типичный вопрос с собеседований для уровня $grade в направлении $directionInIT.
-    Вопрос должен точно соответствовать сложности и тематике этого грейда.
-    
-    КРИТИЧЕСКИ ВАЖНЫЕ ПРАВИЛА (НАРУШЕНИЕ ЛЮБОГО — НЕДОПУСТИМО):
-    - ВЕСЬ текст вопроса должен быть ИСКЛЮЧИТЕЛЬНО на русском языке.
-    - Запрещено использовать английский, китайский, любой другой язык или иероглифы в формулировке вопроса.
-    - Общепринятые IT-термины (Kotlin Coroutines, launch, async, Dispatchers.IO, REST API, SOLID, Docker и т.д.) оставляй на английском — это разрешено.
-    - Все объяснения, связки, глаголы и остальной текст — только по-русски.
-    - Ни в коем случае не вставляй фразы на других языках, даже частично.
-    
-    Выводи СТРОГО в следующем формате и больше абсолютно ничего:
-    Вопрос: [текст вопроса на русском языке]
-    
-    Запрещено:
-    - Добавлять ответы, пояснения, примеры кода, нумерацию.
-    - Использовать markdown, жирный шрифт, кавычки или другой форматинг.
-    - Писать введение, заключение или любой дополнительный текст.
-    - Генерировать больше одной строки с вопросом.
-    - Повторять или частично переводить вопрос на другой язык.
-    
-    Пример правильного вывода:
-    Вопрос: Объясните разницу между launch и async в Kotlin Coroutines и в каких случаях вы используете каждый из них?
-    
-    Ещё один пример:
-    Вопрос: Какой Dispatcher вы выбираете для операций ввода-вывода в Android и почему?
-    
-    Генерируй ТОЛЬКО одну строку в точном формате выше.
-    Учитывай грейд $grade при выборе сложности вопроса.
+    Текущая дата: декабрь 2025 года.
+
+    Твоя задача — сгенерировать РОВНО ОДИН реальный и типичный вопрос с собеседований, который ТОЧНО соответствует сложности и ожиданиям для грейда $grade в направлении $directionInIT.
+
+    ОБЯЗАТЕЛЬНОЕ СООТВЕТСТВИЕ ГРЕЙДУ:
+    - Junior: базовые понятия, фундамент, простые объяснения.
+    - Middle: практика, реальные сценарии, нюансы работы.
+    - Senior: глубокое понимание, оптимизация, архитектура, лучшие практики.
+    - Lead: системный дизайн, масштабирование, стратегии, trade-offs.
+
+    Запрещено генерировать вопрос сложнее или проще указанного грейда. Вопрос должен быть узким и касаться одной темы.
+
+    СТРОЖАЙШЕЕ ПРАВИЛО ФОРМАТИРОВАНИЯ:
+    Используй только обычный текст и стандартные знаки препинания. 
+    ЗАПРЕЩЕНО использовать любой Markdown: никаких жирных шрифтов (**), курсива (*), решеток (#), списков или обратных кавычек.
+    Только буквы, цифры и пунктуация.
+
+    ФОРМАТ ВЫВОДА — ровно две строки:
+    Topic Name
+    текст вопроса на русском
+
+    Правила строк:
+    - Первая строка: короткое название темы (2–4 слова, только латиница).
+    - Вторая строка: Текст вопроса на русском языке.
+    - Никаких префиксов (Вопрос:, Тема:), никаких спецсимволов разметки.
+    - Между строками только один перенос строки.
+    - Никакого лишнего текста.
 """.trimIndent()
 
 fun makeUserPromptForNewQuestion(previousQuestions: List<String>): String {
@@ -117,13 +129,26 @@ fun makeUserPromptForNewQuestion(previousQuestions: List<String>): String {
     }
 
     return """
-        Предыдущие вопросы, которые уже были заданы (НЕ ПОВТОРЯЙ ни один из них — ни дословно, ни по смыслу, ни с похожей формулировкой. Выбирай совершенно другую тему или аспект):
+        Предыдущие вопросы (НЕ ПОВТОРЯЙ ИХ):
         $formattedPrevious
 
-        Сгенерируй новый уникальный вопрос, полностью отличающийся от всех перечисленных выше.
-        Учитывай направление и грейд из системного промпта.
-        Выводи строго в формате: Вопрос: [текст вопроса]
+        Сгенерируй новый уникальный вопрос.
+
+        НАПОМИНАНИЕ ПО ФОРМАТУ:
+        - Никакого Markdown (никаких **, #, ` и прочего).
+        - Только две строки текста.
+        - Первая строка: Topic Name (латиница).
+        - Вторая строка: Вопрос на русском.
     """.trimIndent()
 }
 
+fun retrievingContentFromString(line: String): String {
+    if (line.isBlank() || line.startsWith(":") || line.contains("[DONE]")) return ""
 
+    return if (line.startsWith("data: ") && !line.contains("[DONE]")) {
+        val jsonString = line.removePrefix("data: ")
+
+        val chunk = jsonString.fromJson<ChatStreamChunkDto>()
+        chunk.choices[0].delta.content ?: ""
+    } else ""
+}

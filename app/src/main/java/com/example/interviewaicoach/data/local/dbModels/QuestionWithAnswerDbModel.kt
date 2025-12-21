@@ -11,7 +11,7 @@ data class QuestionWithAnswerDbModel(
     val questionContent: String,
     val answerContent: String,
     val categoryName: String,
-    val gradeDbModel: GradeDbModel,
+    val gradeName: String,
     val isSavedByUser: Boolean
 
 )

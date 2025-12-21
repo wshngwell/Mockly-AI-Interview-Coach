@@ -1,43 +1,45 @@
 package com.example.interviewaicoach.data.mappers
 
-import com.example.interviewaicoach.data.mappers.MapperConsts.AI_MODEL_NAME
+import com.example.interviewaicoach.data.mappers.MapperConsts.AI_MODEL_NAME_FOR_TEXT
 import com.example.interviewaicoach.data.mappers.MapperConsts.SYSTEM_ROLE_NAME
 import com.example.interviewaicoach.data.mappers.MapperConsts.USER_ROLE_NAME
-import com.example.interviewaicoach.data.remote.dto.ChatMessageDto
-import com.example.interviewaicoach.data.remote.dto.ChatRequestDto
-import com.example.interviewaicoach.data.remote.dto.ChatResponseDto
-import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.AnswerEntity
-import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.AnswerRating
+import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatMessageForTextDto
+import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatRequestTextDto
+import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.AnswerAiFeedbackEntity
+import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.CorrectAnswerEntity
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 
-fun ChatResponseDto.mapToAnswerEntity() =
+fun String.mapToAnswerEntity() =
     runCatching {
-        parseSingleCorrectAnswer(text = choices[0].message!!.content!!)
+        parseSingleCorrectAnswer(text = this)
     }.getOrElse {
-        AnswerEntity(answerContent = "")
+        CorrectAnswerEntity(answerContent = "")
     }
 
-fun ChatResponseDto.mapToAnswerRating() =
+fun String.mapToAiFeedback() =
     runCatching {
-        val result = parseRatingOnlyNumber(response = choices[0].message!!.content!!)
-        AnswerRating(result)
+        parseStructuredFeedback(response = this)
+
     }.getOrElse {
-        AnswerRating(-1)
+        AnswerAiFeedbackEntity(
+            ratingFromAi = -1,
+            goodPartAnswer = emptyList(),
+            badPartAnswer = emptyList()
+        )
     }
 
 fun mapQuestionEntityToChatRequest(
-    questionEntity: QuestionEntity,
     systemContentPromt: String,
     userContentPromt: String,
-) = ChatRequestDto(
-    model = AI_MODEL_NAME,
+) = ChatRequestTextDto(
+    model = AI_MODEL_NAME_FOR_TEXT,
     messages = listOf(
-        ChatMessageDto(
+        ChatMessageForTextDto(
             role = SYSTEM_ROLE_NAME,
             content = systemContentPromt
         ),
 
-        ChatMessageDto(
+        ChatMessageForTextDto(
             role = USER_ROLE_NAME,
             content = userContentPromt
         )
@@ -47,10 +49,9 @@ fun mapQuestionEntityToChatRequest(
 fun mapQuestionEntityToChatRequestForCorrectAnswer(
     questionEntity: QuestionEntity
 ) = mapQuestionEntityToChatRequest(
-    questionEntity,
     makeSystemPromptOneCorrectAnswer(
         questionEntity.categoryName,
-        grade = questionEntity.gradeEntity.name,
+        grade = questionEntity.gradeName,
         question = questionEntity.questionContent
     ),
     userContentPromt = makeUserPromptForNewCorrectAnswer(questionEntity.questionContent)
@@ -58,120 +59,191 @@ fun mapQuestionEntityToChatRequestForCorrectAnswer(
 
 fun mapQuestionEntityToChatRequestForAnswerRating(
     questionEntity: QuestionEntity,
-    answerEntity: AnswerEntity
+    userAnswer: String,
+    correctAnswerEntity: CorrectAnswerEntity
+
 ) = mapQuestionEntityToChatRequest(
-    questionEntity,
-    makeSystemPromptForRatingOnlyNumber(
+
+    makeSystemPromptForRatingWithFeedback(
         questionEntity.categoryName,
-        grade = questionEntity.gradeEntity.name,
+        grade = questionEntity.gradeName,
         question = questionEntity.questionContent
     ),
-    userContentPromt = makeUserPromptForRatingOnlyNumber(answerEntity.answerContent)
+    userContentPromt = makeUserPromptForRatingWithFeedback(userAnswer, correctAnswerEntity)
 )
 
 fun makeSystemPromptOneCorrectAnswer(directionInIT: String, grade: String, question: String) = """
-    Ты — эксперт по подготовке к собеседованиям в IT.
-    Пользователь выбрал направление: $directionInIT.
-    Уровень позиции (грейд): $grade.
-    
-    Твоя задача — сгенерировать РОВНО ОДИН правильный, полный и профессиональный ответ на следующий вопрос с реального собеседования:
-    
-    Вопрос: $question
-    
-    Ответ должен:
-    - Быть точным и соответствовать ожидаемому уровню знаний для грейда $grade.
-    - Быть структурированным и логичным — таким, какой ожидал бы услышать интервьюер.
-    - Обязательно содержать ровно один реальный пример (кода, ситуации, схемы или аналогии), который иллюстрирует ключевую идею ответа.
-    - Быть кратким: не более 6 предложений в общей сложности (включая пример).
-    - Если уместно — использовать пример кода в ответе, но не выходить за лимит предложений.
-    
-    Выводи СТРОГО в следующем формате и больше ничего:
-    Ответ: [полный текст ответа]
-    
-    Правила, которые нельзя нарушать:
-    - Только одна строка, начинающаяся с "Ответ: " (с пробелом после двоеточия).
-    - Не повторяй вопрос в ответе.
-    - Никаких введений, заголовков, нумерации или дополнительного текста.
-    - Всё на русском языке (кроме общепринятых IT-терминов).
-    - Markdown можно использовать только для оформления кода (```), если пример требует этого.
-    - Обязательно один пример внутри ответа.
-    - Максимум 6 предложений.
-    
-    Пример правильного вывода:
-    Ответ: Garbage Collector в Java автоматически освобождает память, занимаемую объектами, на которые больше нет ссылок. Он работает в несколько этапов: маркировка достижимых объектов и удаление остальных. Существуют поколения (Young и Old Generation) для оптимизации производительности. Например, в простом приложении объект, созданный в методе, сразу попадает в Young Generation и быстро собирается при Minor GC. Это позволяет эффективно управлять памятью без ручного вмешательства. 
-    
-    Генерируй только такой формат.
+    Ты — эксперт по $directionInIT. Январь 2026 года. 
+    Вопрос для уровня $grade: $question
+
+    Дай лаконичный ответ, разъясняющий суть.
+
+    СТРОЖАЙШИЕ ПРАВИЛА ФОРМАТИРОВАНИЯ:
+    - ЗАПРЕЩЕН любой Markdown: никаких звездочек (**), решеток (#), обратных кавычек (`) или подчеркиваний.
+    - Используй только обычный текст и стандартные знаки препинания.
+    - Разделяй логические части текста абзацем, чтобы текст был читаемым.
+ 
+    СТРУКТУРА И ОБЪЕМ:
+    - Содержание: простое объяснение сути, практики 2026 года, один пример.
+    - Тон: экспертный и доступный.
+    - Выводи только текст ответа, без вступлений типа "Вот ваш ответ" или дополнений.
 """.trimIndent()
 
-fun makeUserPromptForNewCorrectAnswer(question: String): String {
-    return """
-        Вопрос, на который нужно дать ответ: $question
-        
-        Сгенерируй полный, точный и профессиональный ответ на этот вопрос.
-        Ответ должен соответствовать уровню грейда и направлению из системного промпта.
-        Будь структурированным, логичным и содержательным — таким, какой ожидал бы услышать интервьюер на реальном собеседовании.
-        При необходимости используй примеры кода, пояснения нюансов или edge-кейсов.
-        
-        Выводи СТРОГО в следующем формате и больше ничего:
-        Ответ: [полный текст ответа]
-    """.trimIndent()
+fun makeUserPromptForNewCorrectAnswer(question: String): String = """
+    Вопрос: $question
+
+    Напиши ответ (январь 2026) по следующим правилам:
+    1. Ровно 5 предложений.
+    2. НИКАКОГО MARKDOWN (никаких жирных выделений, решеток и спецсимволов разметки).
+    3. Только чистый текст и знаки препинания.
+    4. Раздели ответ на два-три логических абзаца с помощью пустых строк.
+
+    Структура: суть вопроса, как это делают в 2026 году, один легкий пример.
+    Выводи только финальный текст ответа.
+""".trimIndent()
+
+
+fun parseSingleCorrectAnswer(text: String): CorrectAnswerEntity {
+    return CorrectAnswerEntity(
+        answerContent = text.trimStart()
+    )
 }
 
-fun parseSingleCorrectAnswer(text: String): AnswerEntity {
-    val regex = Regex("""Ответ:\s*(.+)$""", setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
-    return when (val match = regex.find(text.trim())) {
-        null -> AnswerEntity(
-            answerContent = ""
-        )
+fun makeUserPromptForRatingWithFeedback(
+    userAnswer: String,
+    correctAnswerEntity: CorrectAnswerEntity
+): String = """
+    ЭТАЛОННЫЙ ОТВЕТ:
+    ${correctAnswerEntity.answerContent}
 
-        else -> AnswerEntity(
-            answerContent = match.groupValues[1].trim()
-        )
+    ОТВЕТ КАНДИДАТА (распознанный голос):
+    $userAnswer
 
-    }
-}
+    ИНСТРУКЦИЯ:
+    1. Сравни смысл ответа кандидата с эталоном.
+    2. ИГНОРИРУЙ ошибки в пунктуации, грамматике или опечатки (это результат перевода голоса в текст).
+    3. ПРОВЕРЬ ТЕМУ: Если кандидат говорит о другом (например, перепутал Activity и Fragment), оценка должна быть низкой.
+    4. Если тема верна и смысл передан — оцени максимально лояльно.
+""".trimIndent()
 
-
-fun makeSystemPromptForRatingOnlyNumber(
+fun makeSystemPromptForRatingWithFeedback(
     directionInIT: String,
     grade: String,
     question: String
 ) = """
-    Ты — строгий и объективный эксперт по собеседованиям в IT с многолетним опытом.
-    Направление: $directionInIT.
-    Уровень позиции (грейд): $grade.
+    Ты — поддерживающий IT-ментор. Ты оцениваешь ответ, который был записан голосом и переведен в текст.
+    Направление: $directionInIT, Грейд: $grade.
+    Вопрос: $question
+
+    ПРАВИЛА ОЦЕНКИ:
+    1. НУЛЕВАЯ КРИТИКА ГРАММАТИКИ: Вообще не обращай внимания на отсутствие знаков препинания, ошибки в словах или плохой синтаксис. Оценивай только СМЫСЛ.
     
-    Вопрос с реального собеседования:
-    $question
+    2. ПРОВЕРКА СООТВЕТСТВИЯ: 
+       - Если ответ в корне не по теме вопроса (ошибка в базовом термине/сущности), ставь 1-3 балла. 
+       - Мягко укажи на путаницу: "Кажется, ты описал процесс для другой задачи, давай попробуем сфокусироваться на $question".
+
+    3. ЛОЯЛЬНОСТЬ К СУТИ:
+       - Если кандидат уловил суть и ответил именно на поставленный вопрос — ставь 9-10 баллов.
+       - Не требуй точности формулировок или глубины эталона. Достаточно базового правильного понимания.
+
+    4. ФОРМАТ ФИДБЕКА:
+       - В "Сильных сторонах" хвали за понимание логики.
+       - В "Слабых сторонах" не упоминай ошибки текста, только технические советы, если чего-то не хватило для полноты картины.
+
+    ШКАЛА ОЦЕНКИ (БУДЬ ЛОЯЛЕН):
+    1-2: Кандидат молчит, говорит "не знаю" или несет полный бред, не относящийся к IT.
+    3-4: Кандидат перепутал сущности (например, описывает интерфейс вместо абстрактного класса) или критически ошибся в базе.
+    5-6: Ответ очень поверхностный, названо только 1-2 ключевых слова, но общее направление мысли верное.
+    7-8: Хороший ответ. Суть передана верно, основные моменты названы, есть небольшие неточности.
+    9-10: Отличный ответ. Кандидат понимает тему и ответил на вопрос, даже если не использовал книжные формулировки.
+
+    ПРАВИЛА ОЦЕНКИ:
+    1. Игнорируй ошибки распознавания голоса, плохой синтаксис и отсутствие знаков препинания в ответе кандидата.
+    2. Если суть верна — всегда ставь 9 или 10. Не снижай баллы за отсутствие глубины, если база описана правильно.
+ВАЖНОЕ ПРАВИЛО ПО ФОРМАТИРОВАНИЮ: 
+    Запрещено использовать Markdown. Не используй жирный шрифт (**), курсив (*), заголовки (#) или символы списков (дефисы, звездочки). Разделяй мысли только переносом строки.
     
-    Твоя задача — сначала мысленно сформулировать идеальный правильный ответ на этот вопрос для указанного грейда.
-    Затем оценить ответ кандидата по шкале от 1 до 10:
-    - 10 — ответ полностью правильный, полный, структурированный, с хорошим примером, идеально подходит под грейд.
-    - 8–9 — отличный ответ, есть мелкие недочёты или можно было добавить глубины.
-    - 6–7 — хороший, но средний: основные моменты есть, но упущены важные детали или пример слабый.
-    - 4–5 — удовлетворительный: частично правильный, но много пропусков, неточностей.
-    - 1–3 — слабый, неправильный или не по теме.
-    
-    Оценивай честно, объективно и последовательно.
-    
-    Выводи ТОЛЬКО ОДНО ЧИСЛО от 1 до 10.
-    Ничего больше: без слов, без обоснования, без пробелов до/после, без перевода строки.
-    
-    Пример правильного вывода:
-    7
+    ФОРМАТ ОТВЕТА (СТРОГО):
+    Рейтинг: X
+    Сильные стороны:
+    - пункт
+    Слабые стороны:
+    - пункт
 """.trimIndent()
 
-fun makeUserPromptForRatingOnlyNumber(userAnswer: String): String {
-    return """
-        Ответ кандидата:
-        $userAnswer
-        
-        Оцени этот ответ по шкале от 1 до 10 на основе твоего знания правильного ответа.
-        Выводи ТОЛЬКО одно число от 1 до 10. Ничего больше.
-    """.trimIndent()
+
+
+private fun parseStructuredFeedback(response: String): AnswerAiFeedbackEntity {
+    val cleaned = response.trim()
+
+    val ratingRegex = Regex("""Рейтинг:\s*(\d+)""", RegexOption.IGNORE_CASE)
+    val rating = ratingRegex.find(cleaned)
+        ?.groupValues?.get(1)
+        ?.toIntOrNull()
+        ?.coerceIn(1, 10) ?: -1
+
+    val goodParts = extractSectionBulletPoints(cleaned, "Сильные стороны:", "Слабые стороны:")
+    val badParts = extractSectionBulletPoints(cleaned, "Слабые стороны:", null)
+
+    return AnswerAiFeedbackEntity(
+        ratingFromAi = rating,
+        goodPartAnswer = goodParts,
+        badPartAnswer = badParts
+    )
 }
 
-fun parseRatingOnlyNumber(response: String): Int {
-    val cleaned = response.trim()
-    return cleaned.toIntOrNull()?.coerceIn(1, 10) ?: 1
+private fun extractSectionBulletPoints(
+    text: String,
+    startKeyword: String,
+    endKeyword: String?
+): List<String> {
+    val result = mutableListOf<String>()
+
+    // Гибкий поиск начала раздела (игнорируем лишние пробелы, жирный шрифт и т.п.)
+    val startRegex = Regex("""${Regex.escape(startKeyword)}\s*""", RegexOption.IGNORE_CASE)
+    val startMatch = startRegex.find(text) ?: return result
+    val startIndex = startMatch.range.last + 1
+
+    // Поиск конца
+    val endIndex = endKeyword?.let {
+        val endRegex = Regex("""${Regex.escape(it)}\s*""", RegexOption.IGNORE_CASE)
+        endRegex.find(text, startIndex)?.range?.first ?: text.length
+    } ?: text.length
+
+    val sectionText = text.substring(startIndex, endIndex)
+
+    val lines = sectionText.lines()
+    var currentPoint: StringBuilder? = null
+
+    for (line in lines) {
+        val trimmed = line.trim()
+        if (trimmed.isEmpty()) continue
+
+        // Это пункт списка?
+        if (trimmed.startsWith("- ") || trimmed.startsWith("• ") || trimmed.startsWith("* ") || trimmed.matches(
+                Regex("""^\d+\.\s+.*""")
+            )
+        ) {
+            currentPoint?.let { if (it.isNotBlank()) result.add(it.toString().trim()) }
+            currentPoint = StringBuilder(
+                trimmed.removePrefix("-").removePrefix("•").removePrefix("*")
+                    .removePrefix("""\d+\.""").trim()
+            )
+        }
+        // Продолжение предыдущего пункта
+        else if (currentPoint != null && (trimmed.firstOrNull()
+                ?.isLetterOrDigit() == true || trimmed.startsWith(","))
+        ) {
+            currentPoint.append(" $trimmed")
+        }
+        // Это "Нет" как ответ
+        else if (trimmed.equals("Нет", ignoreCase = true)) {
+            result.add("Нет")
+            break
+        }
+    }
+
+    currentPoint?.let { if (it.isNotBlank()) result.add(it.toString().trim()) }
+
+    return if (result.isEmpty()) listOf("Нет") else result
 }

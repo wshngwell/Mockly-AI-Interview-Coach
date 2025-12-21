@@ -3,5 +3,5 @@ package com.example.interviewaicoach.domain.entities.questionsWithAnswersEntitie
 data class QuestionWithAnswerEntity(
     val id: String? = null,
     val questionEntity: QuestionEntity,
-    val answerEntity: AnswerEntity
+    val correctAnswerEntity: CorrectAnswerEntity
 )

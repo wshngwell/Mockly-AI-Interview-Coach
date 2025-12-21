@@ -7,8 +7,11 @@ interface FavouriteQuestionsWIthAnswerRepository {
 
     fun loadFavouritesQuestionsWithAnswer(): SharedFlow<List<QuestionWithAnswerEntity>>
 
-    suspend fun addToFavouriteQuestionWithAnswer(questionWithAnswerEntity: QuestionWithAnswerEntity)
+    suspend fun addToFavouriteQuestionWithAnswer(
+        questionWithAnswerEntity: QuestionWithAnswerEntity,
+        isSavedByUser: Boolean
+    )
 
-    suspend fun deleteFromFavouriteQuestionWithAnswer(questionId: String)
+    suspend fun deleteFromFavouriteQuestionWithAnswer(questionName: String)
 
 }

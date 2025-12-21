@@ -7,9 +7,9 @@ import kotlinx.coroutines.withContext
 class DeleteQuestionWithAnswerFromFavouriteUseCase(
     private val favouriteQuestionsWIthAnswerRepository: FavouriteQuestionsWIthAnswerRepository
 ) {
-    suspend operator fun invoke(questionWithAnswerId: String) = withContext(Dispatchers.IO) {
+    suspend operator fun invoke(questionName: String) = withContext(Dispatchers.IO) {
         favouriteQuestionsWIthAnswerRepository.deleteFromFavouriteQuestionWithAnswer(
-            questionWithAnswerId
+            questionName
         )
     }
 

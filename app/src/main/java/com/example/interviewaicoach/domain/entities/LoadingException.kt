@@ -1,14 +1,13 @@
 package com.example.interviewaicoach.domain.entities
 
-sealed class LoadingException(ex: Throwable) : Throwable(ex) {
+sealed class LoadingException : Throwable() {
 
-    override val cause: Throwable = ex
 
-    class NetworkError(ex: Throwable) : LoadingException(ex)
+    class NetworkError : LoadingException()
 
-    class HttpError(ex: Throwable) : LoadingException(ex)
+    class HttpError : LoadingException()
 
-    class EmptyAnswer(ex: Throwable) : LoadingException(ex)
+    class SpeechRecordingError : LoadingException()
 
-    class OtherError(ex: Throwable) : LoadingException(ex)
+    class OtherError : LoadingException()
 }

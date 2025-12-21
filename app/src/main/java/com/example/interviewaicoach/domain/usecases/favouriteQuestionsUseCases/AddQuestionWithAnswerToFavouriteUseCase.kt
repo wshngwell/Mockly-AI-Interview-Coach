@@ -8,10 +8,11 @@ import kotlinx.coroutines.withContext
 class AddQuestionWithAnswerToFavouriteUseCase(
     private val favouriteQuestionsWIthAnswerRepository: FavouriteQuestionsWIthAnswerRepository
 ) {
-    suspend operator fun invoke(questionWithAnswerEntity: QuestionWithAnswerEntity) =
+    suspend operator fun invoke(questionWithAnswerEntity: QuestionWithAnswerEntity, isSavedByUser: Boolean) =
         withContext(Dispatchers.IO) {
             favouriteQuestionsWIthAnswerRepository.addToFavouriteQuestionWithAnswer(
-                questionWithAnswerEntity
+                questionWithAnswerEntity,
+                isSavedByUser
             )
         }
 }

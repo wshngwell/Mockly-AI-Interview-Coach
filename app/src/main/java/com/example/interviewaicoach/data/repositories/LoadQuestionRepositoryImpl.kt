@@ -3,46 +3,78 @@ package com.example.interviewaicoach.data.repositories
 import com.example.interviewaicoach.data.local.QuestionsWithAnswersDao
 import com.example.interviewaicoach.data.mappers.mapCategoryWithGradeToChatRequestForQuestion
 import com.example.interviewaicoach.data.mappers.mapToQuestionEntity
+import com.example.interviewaicoach.data.mappers.retrievingContentFromString
 import com.example.interviewaicoach.data.remote.ApiService
+import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatStreamChunkDto
 import com.example.interviewaicoach.data.remote.parseToLoadingException
 import com.example.interviewaicoach.domain.entities.LoadingException
 import com.example.interviewaicoach.domain.entities.TResult
-import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.GradeEntity
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.repositories.LoadQuestionRepository
+import com.example.interviewaicoach.presentation.GsonUtil.fromJson
+import com.example.interviewaicoach.utils.myLog
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
 
 class LoadQuestionRepositoryImpl(
     private val apiService: ApiService,
     private val questionsWithAnswersDao: QuestionsWithAnswersDao
 ) : LoadQuestionRepository {
 
-    override suspend fun loadQuestion(
+    override fun loadQuestion(
         categoryName: String,
-        gradeEntity: GradeEntity,
-    ): TResult<QuestionEntity, LoadingException> =
-        withContext(Dispatchers.IO) {
+        gradeName: String,
+    ): Flow<TResult<QuestionEntity, LoadingException>> = channelFlow {
+        runCatching {
 
-            return@withContext runCatching {
+            val savedBySystem =
+                questionsWithAnswersDao.getAllOnlySystemSavedQuestionsContentFromDb(categoryName, gradeName)
+                    .takeLast(150)
 
-                val savedBySystem =
-                    questionsWithAnswersDao.getAllOnlySystemSavedQuestionsContentFromDb()
-                        .takeLast(150)
+            val responseBody = apiService.sendPromt(
+                mapCategoryWithGradeToChatRequestForQuestion(
+                    categoryName,
+                    gradeName,
+                    savedBySystem
+                )
+            )
+            val fullContentAccumulator = StringBuilder()
 
-                val result = apiService.sendPromt(
-                    mapCategoryWithGradeToChatRequestForQuestion(
-                        categoryName,
-                        gradeEntity,
-                        savedBySystem
-                    )
-                ).mapToQuestionEntity(categoryName, gradeEntity)
 
-                TResult.Success<QuestionEntity, LoadingException>(data = result)
+            responseBody.byteStream().bufferedReader().useLines { lines ->
+                lines.forEach { line ->
 
-            }.getOrElse {
-                TResult.Error(it.parseToLoadingException())
+                    val content = retrievingContentFromString(line)
+
+                    if (content.isNotEmpty()) {
+                        fullContentAccumulator.append(content)
+
+                        val questionEntity =
+                            fullContentAccumulator.toString().mapToQuestionEntity(
+                                categoryName,
+                                gradeName
+                            )
+                        myLog(questionEntity.toString())
+                        send(TResult.Success<QuestionEntity, LoadingException>(data = questionEntity))
+                    }
+                }
+            }
+
+        }.getOrElse {
+            send(TResult.Error(it.parseToLoadingException()))
+        }
+    }
+        .flatMapConcat {
+            channelFlow {
+                send(it)
+                delay(50)
             }
         }
+        .flowOn(Dispatchers.IO)
 
 }
