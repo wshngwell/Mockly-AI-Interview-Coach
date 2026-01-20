@@ -15,7 +15,6 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Task
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,12 +27,10 @@ import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.correctAnswerScreenElements.IconWithText
 import com.example.interviewaicoach.presentation.theme.clipParamsForAiResponseOption
 import com.example.interviewaicoach.presentation.theme.clipParamsForQuestionWithAnswerBox
-import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
 import com.example.interviewaicoach.presentation.theme.greenBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.horizontalDividerColor
 import com.example.interviewaicoach.presentation.theme.horizontalPaddingOfResultScreenRating
 import com.example.interviewaicoach.presentation.theme.lightIconColor
-import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.pink
 import com.example.interviewaicoach.presentation.theme.questionAiFeedbackOptionsFontSize
 import com.example.interviewaicoach.presentation.theme.questionWithAnswerCardColor
@@ -41,7 +38,6 @@ import com.example.interviewaicoach.presentation.theme.resultCardInnerPadding
 import com.example.interviewaicoach.presentation.theme.resultCardTopOuterPadding
 import com.example.interviewaicoach.presentation.theme.resultListItemsFontSize
 import com.example.interviewaicoach.presentation.theme.resultScreenHorizontalDividerVerticalPadding
-import com.example.interviewaicoach.presentation.theme.resultsFontSizeForTitleOfCard
 import com.example.interviewaicoach.presentation.theme.transparentGradientBrush
 import com.example.interviewaicoach.presentation.theme.verticalPaddingOfAiFeedBackOptions
 

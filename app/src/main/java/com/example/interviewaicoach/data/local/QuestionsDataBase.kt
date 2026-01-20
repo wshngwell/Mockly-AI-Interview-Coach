@@ -4,16 +4,16 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.interviewaicoach.data.local.dbModels.QuestionWithAnswerDbModel
+import com.example.interviewaicoach.data.local.dbModels.QuestionDbModel
 
 @Database(
-    entities = [QuestionWithAnswerDbModel::class],
-    version = 3,
+    entities = [QuestionDbModel::class],
+    version = 4,
     exportSchema = true
 )
 abstract class QuestionsDataBase : RoomDatabase() {
 
-    abstract fun getQuestionsWithAnswersDao(): QuestionsWithAnswersDao
+    abstract fun getQuestionsWithAnswersDao(): QuestionsDao
 
     companion object {
         private const val DB_NAME = "QuestionsDataBase"

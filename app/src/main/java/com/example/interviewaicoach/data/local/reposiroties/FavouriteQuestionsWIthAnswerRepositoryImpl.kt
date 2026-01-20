@@ -1,9 +1,9 @@
 package com.example.interviewaicoach.data.local.reposiroties
 
-import com.example.interviewaicoach.data.local.QuestionsWithAnswersDao
-import com.example.interviewaicoach.data.mappers.mapToQuestionWithAnswerEntity
-import com.example.interviewaicoach.data.mappers.toQuestionWithAnswerDbModel
-import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionWithAnswerEntity
+import com.example.interviewaicoach.data.local.QuestionsDao
+import com.example.interviewaicoach.data.mappers.mapToQuestionEntity
+import com.example.interviewaicoach.data.mappers.toQuestionDbModel
+import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.repositories.FavouriteQuestionsWIthAnswerRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,16 +17,16 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.withContext
 
 class FavouriteQuestionsWIthAnswerRepositoryImpl(
-    private val questionsWithAnswersDao: QuestionsWithAnswersDao
+    private val questionsDao: QuestionsDao
 ) : FavouriteQuestionsWIthAnswerRepository {
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    override fun loadFavouritesQuestionsWithAnswer(): SharedFlow<List<QuestionWithAnswerEntity>> =
-        questionsWithAnswersDao.getAllOnlyUserSavedQuestionsWithAnswersFromDb()
-            .map { listOfQuestionsWithAnswers ->
-                listOfQuestionsWithAnswers.map {
-                    it.mapToQuestionWithAnswerEntity()
+    override val loadFavouritesQuestions: SharedFlow<List<QuestionEntity>> =
+        questionsDao.getAllOnlyUserSavedQuestionsFromDb()
+            .map { listOfQuestions ->
+                listOfQuestions.map {
+                    it.mapToQuestionEntity()
                 }
             }
             .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
@@ -40,18 +40,36 @@ class FavouriteQuestionsWIthAnswerRepositoryImpl(
                 replay = 1
             )
 
-    override suspend fun addToFavouriteQuestionWithAnswer(
-        questionWithAnswerEntity: QuestionWithAnswerEntity,
+    override val loadCategoriesNamesFromFavouriteQuestions: SharedFlow<List<String>> =
+        questionsDao.getAllCategoriesFromDb()
+            .map { listOfQuestionsWithAnswers ->
+                listOfQuestionsWithAnswers.map {
+                    it
+                }
+            }
+            .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
+            .distinctUntilChanged()
+            .shareIn(
+                scope = scope,
+                started = SharingStarted.WhileSubscribed(
+                    stopTimeoutMillis = 10_000,
+                    replayExpirationMillis = 0
+                ),
+                replay = 1
+            )
+
+    override suspend fun addToFavouriteQuestion(
+        questionEntity: QuestionEntity,
         isSavedByUser: Boolean,
     ) =
         withContext(Dispatchers.IO) {
-            questionsWithAnswersDao.addQuestionWithAnswerToDb(
-                questionWithAnswerEntity.toQuestionWithAnswerDbModel(isSavedByUser)
+            questionsDao.addQuestionToDb(
+                questionEntity.toQuestionDbModel(isSavedByUser)
             )
         }
 
-    override suspend fun deleteFromFavouriteQuestionWithAnswer(questionName: String) =
+    override suspend fun deleteFromFavouriteQuestion(questionName: String) =
         withContext(Dispatchers.IO) {
-            questionsWithAnswersDao.deleteQuestionWithAnswerFromDb(questionName)
+            questionsDao.deleteQuestionFromDb(questionName)
         }
 }

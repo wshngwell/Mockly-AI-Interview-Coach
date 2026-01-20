@@ -1,7 +1,7 @@
 package com.example.interviewaicoach.di
 
+import com.example.interviewaicoach.data.local.QuestionsDao
 import com.example.interviewaicoach.data.local.QuestionsDataBase
-import com.example.interviewaicoach.data.local.QuestionsWithAnswersDao
 import com.example.interviewaicoach.data.local.reposiroties.FavouriteQuestionsWIthAnswerRepositoryImpl
 import com.example.interviewaicoach.data.remote.ApiFactory
 import com.example.interviewaicoach.data.remote.ApiService
@@ -14,9 +14,10 @@ import com.example.interviewaicoach.domain.repositories.FavouriteQuestionsWIthAn
 import com.example.interviewaicoach.domain.repositories.LoadQuestionRepository
 import com.example.interviewaicoach.domain.repositories.RecordAudioRepository
 import com.example.interviewaicoach.domain.repositories.SpeechToTextRepository
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.AddQuestionWithAnswerToFavouriteUseCase
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.DeleteQuestionWithAnswerFromFavouriteUseCase
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.LoadFavouriteQuestionsWithAnswerUseCase
+import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.AddQuestionToFavouriteUseCase
+import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.DeleteQuestionFromFavouriteUseCase
+import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.GetFavouriteCategoriesUseCase
+import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.GetFavouriteQuestionsUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.LoadCorrectAnswerUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.LoadQuestionUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.PostUserAnswerUseCase
@@ -24,6 +25,8 @@ import com.example.interviewaicoach.domain.usecases.recordSpeechUseCases.StartRe
 import com.example.interviewaicoach.domain.usecases.recordSpeechUseCases.StopRecordingUseCase
 import com.example.interviewaicoach.domain.usecases.recordSpeechUseCases.TranscribeAudioUseCase
 import com.example.interviewaicoach.presentation.viemodels.DirectionScreenViewModel
+import com.example.interviewaicoach.presentation.viemodels.FavouriteCategoriesViewModel
+import com.example.interviewaicoach.presentation.viemodels.FavouriteQuestionsInCategoryScreenViewModel
 import com.example.interviewaicoach.presentation.viemodels.GradeScreenViewModel
 import com.example.interviewaicoach.presentation.viemodels.QuestionsWithAnswersViewModel
 import com.example.interviewaicoach.presentation.viemodels.ResultScreenViewModel
@@ -38,7 +41,7 @@ val appModule = module {
         ApiFactory.getApiService()
     }
 
-    single<QuestionsWithAnswersDao> {
+    single<QuestionsDao> {
         QuestionsDataBase.getInstance(androidApplication()).getQuestionsWithAnswersDao()
     }
 
@@ -46,12 +49,12 @@ val appModule = module {
         AnswersRepositoryImpl(apiService = get<ApiService>())
     }
     single<FavouriteQuestionsWIthAnswerRepository> {
-        FavouriteQuestionsWIthAnswerRepositoryImpl(questionsWithAnswersDao = get<QuestionsWithAnswersDao>())
+        FavouriteQuestionsWIthAnswerRepositoryImpl(questionsDao = get<QuestionsDao>())
     }
     single<LoadQuestionRepository> {
         LoadQuestionRepositoryImpl(
             apiService = get<ApiService>(),
-            questionsWithAnswersDao = get<QuestionsWithAnswersDao>()
+            questionsDao = get<QuestionsDao>()
         )
     }
     single<SpeechToTextRepository> {
@@ -63,19 +66,19 @@ val appModule = module {
         RecordAudioRepositoryImpl()
     }
 
-    factory<AddQuestionWithAnswerToFavouriteUseCase> {
-        AddQuestionWithAnswerToFavouriteUseCase(
+    factory<AddQuestionToFavouriteUseCase> {
+        AddQuestionToFavouriteUseCase(
             favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
         )
     }
 
-    factory<DeleteQuestionWithAnswerFromFavouriteUseCase> {
-        DeleteQuestionWithAnswerFromFavouriteUseCase(
+    factory<DeleteQuestionFromFavouriteUseCase> {
+        DeleteQuestionFromFavouriteUseCase(
             favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
         )
     }
-    factory<LoadFavouriteQuestionsWithAnswerUseCase> {
-        LoadFavouriteQuestionsWithAnswerUseCase(
+    factory<GetFavouriteQuestionsUseCase> {
+        GetFavouriteQuestionsUseCase(
             favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
         )
     }
@@ -101,8 +104,13 @@ val appModule = module {
             answerRepository = get<AnswerRepository>()
         )
     }
-    factory<LoadFavouriteQuestionsWithAnswerUseCase> {
-        LoadFavouriteQuestionsWithAnswerUseCase(
+    factory<GetFavouriteCategoriesUseCase> {
+        GetFavouriteCategoriesUseCase(
+            favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
+        )
+    }
+    factory<GetFavouriteQuestionsUseCase> {
+        GetFavouriteQuestionsUseCase(
             favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
         )
     }
@@ -118,8 +126,8 @@ val appModule = module {
         )
     }
 
-    factory<DeleteQuestionWithAnswerFromFavouriteUseCase> {
-        DeleteQuestionWithAnswerFromFavouriteUseCase(
+    factory<DeleteQuestionFromFavouriteUseCase> {
+        DeleteQuestionFromFavouriteUseCase(
             favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
         )
     }
@@ -133,11 +141,24 @@ val appModule = module {
             loadQuestionUseCase = get<LoadQuestionUseCase>(),
             loadCorrectAnswerUseCase = get<LoadCorrectAnswerUseCase>(),
             postUserAnswerUseCase = get<PostUserAnswerUseCase>(),
-            addQuestionWithAnswerToFavouriteUseCase = get<AddQuestionWithAnswerToFavouriteUseCase>(),
-            loadFavouriteQuestionsWithAnswerUseCase = get<LoadFavouriteQuestionsWithAnswerUseCase>(),
-            deleteQuestionWithAnswerFromFavouriteUseCase = get<DeleteQuestionWithAnswerFromFavouriteUseCase>(),
+            addQuestionToFavouriteUseCase = get<AddQuestionToFavouriteUseCase>(),
+            getFavouriteQuestionsUseCase = get<GetFavouriteQuestionsUseCase>(),
+            deleteQuestionFromFavouriteUseCase = get<DeleteQuestionFromFavouriteUseCase>(),
         )
     }
+    viewModel<FavouriteCategoriesViewModel> {
+        FavouriteCategoriesViewModel(
+            getFavouriteCategoriesUseCase = get<GetFavouriteCategoriesUseCase>()
+        )
+    }
+
+    viewModel<FavouriteQuestionsInCategoryScreenViewModel> { (categoryName: String) ->
+        FavouriteQuestionsInCategoryScreenViewModel(
+            categoryName = categoryName,
+            getFavouriteQuestionsUseCase = get<GetFavouriteQuestionsUseCase>()
+        )
+    }
+
     viewModel<ResultScreenViewModel> { (
                                            pointsSum: Int,
                                            countsOfQuestions: Int,
@@ -163,6 +184,9 @@ val appModule = module {
 
 fun paramsForQuestionWithAnswerViewModel(directionInIt: String, gradeName: String) =
     parametersOf(directionInIt, gradeName)
+
+fun paramsForFavouriteQuestionsInCategoryScreenViewModel(categoryName: String) =
+    parametersOf(categoryName)
 
 fun paramsForResultScreeViewModel(
     pointsSum: Int,

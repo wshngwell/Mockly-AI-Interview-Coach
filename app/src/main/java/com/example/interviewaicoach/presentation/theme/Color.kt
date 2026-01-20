@@ -8,6 +8,7 @@ val questionWithAnswerCardColor = bottomBarBackgroundColor
 
 val selectedBottomElementBarColor = Color.White
 val unselectedBottomBarElementColor = Color(0xFF7E7E7E)
+val favCategoryArrowColor = Color(0xFF7E7E7E)
 val numberAndTopicOfQuestionColor = unselectedBottomBarElementColor
 
 val myBackGround

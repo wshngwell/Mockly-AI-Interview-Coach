@@ -7,6 +7,7 @@
     <string name="black_option">Темная тема</string>
     <string name="system_option">Системная тема</string>
     <string name="frontend">Frontend</string>
+    <string name="my_questions">Мои вопросы</string>
     <string name="backend">Backend</string>
     <string name="android">Android</string>
     <string name="ios">iOS</string>
@@ -24,6 +25,8 @@
     <string name="senior">Senior</string>
     <string name="lead">Lead</string>
     <string name="exit_from_interview">Выход из интервью</string>
+    <string name="delete_quest_from_fav">Удалить вопросы из избранного</string>
+    <string name="go_into_category">Попасть в категорию</string>
     <string name="menu_from_interview">Меню интервью</string>
     <string name="save_question">Сохранить</string>
     <string name="delete_question">Удалить</string>

@@ -53,7 +53,7 @@ class AnswersRepositoryImpl(
     }
         .flatMapConcat {
             channelFlow {
-                delay(20)
+                delay(50)
                 send(it)
             }
         }
@@ -106,7 +106,7 @@ class AnswersRepositoryImpl(
         .flatMapConcat {
             channelFlow {
                 send(it)
-                delay(20)
+                delay(50)
             }
         }
         .flowOn(Dispatchers.IO)

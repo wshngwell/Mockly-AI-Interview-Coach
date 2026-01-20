@@ -2,8 +2,6 @@ package com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseC
 
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.repositories.AnswerRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class LoadCorrectAnswerUseCase(
     private val answerRepository: AnswerRepository

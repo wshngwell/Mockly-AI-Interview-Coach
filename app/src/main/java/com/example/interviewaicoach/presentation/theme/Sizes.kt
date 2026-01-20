@@ -25,10 +25,13 @@ val numberAndTopicOfQuestionFontSize = answersFontSize
 val questionWIthAnswerCardTopOuterPadding = 36.dp
 val resultCardTopOuterPadding = questionWIthAnswerCardTopOuterPadding
 val questionWIthAnswerCardInnerPadding = 20.dp
+
+val horizontalFavQuestionsCardPadding = 12.dp
 val resultCardInnerPadding = questionWIthAnswerCardInnerPadding
 val numberAndTopicOfQuestionBottomPadding = 20.dp
 val resultsCommonPaddingVertical = 8.dp
 val horizontalDividerVerticalPadding = 12.dp
+val verticalFavQuestionCardPadding = 3.dp
 val resultScreenHorizontalDividerVerticalPadding = 20.dp
 val alertDialogInnerPadding = resultScreenHorizontalDividerVerticalPadding
 val chooseDirectionFontSize = 18.sp
@@ -39,6 +42,7 @@ val aiFeedbackTextFontSize = 16.sp
 
 val BottomButtonFontSize = 14.sp
 val resultListItemsFontSize = 16
+val favouriteQuestionCardCategoryHorizontalPadding = screenHorizontalPadding
 
 val alertDialogTextOnButtonsFontSize = resultListItemsFontSize
 val questionAiFeedbackOptionsFontSize = 13
@@ -58,6 +62,7 @@ val bottomButtonSaveQuestionScreenEndPadding = 10.dp
 
 val sizeOfIcons = 24.dp
 val sizeOfIconsButton = 40.dp
+val paddingIntoIcon = 16.dp
 val sizeOfRecordingIcon = 10.dp
 val heightOfSkeletonRow = 20.dp
 

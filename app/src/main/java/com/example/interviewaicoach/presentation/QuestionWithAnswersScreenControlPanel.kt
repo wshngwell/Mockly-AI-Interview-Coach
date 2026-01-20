@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,28 +28,35 @@ import com.example.interviewaicoach.presentation.theme.topControlPanelQuestionsS
 
 @Preview
 @Composable
-fun QuestionWithAnswersScreenControlPanel(
+fun QuestionsNavBar(
     modifier: Modifier = Modifier,
-    onCrossClicked: () -> Unit = {},
-    text: String = stringResource(R.string.frontend)
-) {
+    onLeftIconClicked: () -> Unit = {},
+    leftIcon: ImageVector = Icons.Outlined.Close,
+    leftIconContentDescription: String = stringResource(R.string.exit_from_interview),
+    text: String = stringResource(R.string.frontend),
+    shouldBeRightIconButton: Boolean = false,
+    onRightIconClicked: () -> Unit = {},
+    rightIcon: ImageVector = Icons.Outlined.MoreVert,
+    rightIconContentDescription: String = stringResource(R.string.delete_quest_from_fav),
+
+
+    ) {
 
     Box(
         modifier = modifier.fillMaxWidth(),
 
         ) {
         IconButton(
-            onClick = onCrossClicked,
+            onClick = onLeftIconClicked,
             modifier = Modifier
                 .size(sizeOfIconsButton)
                 .clip(CircleShape)
         ) {
             Icon(
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
                     .size(sizeOfIcons),
-                imageVector = Icons.Outlined.Close,
-                contentDescription = stringResource(R.string.exit_from_interview),
+                imageVector = leftIcon,
+                contentDescription = leftIconContentDescription,
                 tint = lightIconColor
             )
         }
@@ -60,6 +69,23 @@ fun QuestionWithAnswersScreenControlPanel(
             color = darkThemeTextColor,
             fontSize = topControlPanelQuestionsScreenFontSize
         )
+        if (shouldBeRightIconButton) {
+            IconButton(
+                onClick = onRightIconClicked,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .size(sizeOfIconsButton)
+                    .clip(CircleShape)
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(sizeOfIcons),
+                    imageVector = rightIcon,
+                    contentDescription = rightIconContentDescription,
+                    tint = lightIconColor
+                )
+            }
+        }
 
     }
 }

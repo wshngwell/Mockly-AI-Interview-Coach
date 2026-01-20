@@ -1,6 +1,5 @@
 package com.example.interviewaicoach.data.mappers
 
-import com.example.interviewaicoach.data.local.dbModels.QuestionWithAnswerDbModel
 import com.example.interviewaicoach.data.mappers.MapperConsts.AI_MODEL_NAME_FOR_TEXT
 import com.example.interviewaicoach.data.mappers.MapperConsts.SYSTEM_ROLE_NAME
 import com.example.interviewaicoach.data.mappers.MapperConsts.USER_ROLE_NAME

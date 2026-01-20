@@ -19,10 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.interviewaicoach.R
-import com.example.interviewaicoach.presentation.ChooseDirectionControlPanel
+import com.example.interviewaicoach.presentation.ChooseDirectionNavBar
 import com.example.interviewaicoach.presentation.DirectionUiModel
 import com.example.interviewaicoach.presentation.OptionsForInterViewBox
-import com.example.interviewaicoach.presentation.theme.beginInterviewFontSize
+import com.example.interviewaicoach.presentation.destinations.FavouriteQuestionsCategoriesScreenDestination
 import com.example.interviewaicoach.presentation.theme.chooseDirectionFontSize
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.myBackGround
@@ -30,7 +30,6 @@ import com.example.interviewaicoach.presentation.theme.screenBottomAdditionalPad
 import com.example.interviewaicoach.presentation.theme.screenHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.screenTopPadding
 import com.example.interviewaicoach.presentation.viemodels.DirectionScreenViewModel
-import com.example.interviewaicoach.presentation.viemodels.ResultScreenViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -64,6 +63,12 @@ fun ChooseDirectionScreen(
                         launchSingleTop = true
                     }
                 }
+
+                DirectionScreenViewModel.Event.OnNavigateToFavouriteQuestionScreen -> {
+                    navigator.navigate(FavouriteQuestionsCategoriesScreenDestination) {
+                        launchSingleTop = true
+                    }
+                }
             }
         }
     }
@@ -92,7 +97,9 @@ private fun UI(
                 bottom = screenBottomAdditionalPadding
             )
     ) {
-        ChooseDirectionControlPanel()
+        ChooseDirectionNavBar(
+            onFavouriteIconClicked = { intent(DirectionScreenViewModel.Intent.OnFavouriteIconClicked) }
+        )
 
         Column(
             modifier = Modifier

@@ -9,10 +9,9 @@ import com.example.interviewaicoach.domain.entities.TResult
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.AnswerAiFeedbackEntity
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.CorrectAnswerEntity
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
-import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionWithAnswerEntity
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.AddQuestionWithAnswerToFavouriteUseCase
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.DeleteQuestionWithAnswerFromFavouriteUseCase
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.LoadFavouriteQuestionsWithAnswerUseCase
+import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.AddQuestionToFavouriteUseCase
+import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.DeleteQuestionFromFavouriteUseCase
+import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.GetFavouriteQuestionsUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.LoadCorrectAnswerUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.LoadQuestionUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.PostUserAnswerUseCase
@@ -41,9 +40,9 @@ class QuestionsWithAnswersViewModel(
     private val loadQuestionUseCase: LoadQuestionUseCase,
     private val loadCorrectAnswerUseCase: LoadCorrectAnswerUseCase,
     private val postUserAnswerUseCase: PostUserAnswerUseCase,
-    private val addQuestionWithAnswerToFavouriteUseCase: AddQuestionWithAnswerToFavouriteUseCase,
-    private val loadFavouriteQuestionsWithAnswerUseCase: LoadFavouriteQuestionsWithAnswerUseCase,
-    private val deleteQuestionWithAnswerFromFavouriteUseCase: DeleteQuestionWithAnswerFromFavouriteUseCase
+    private val addQuestionToFavouriteUseCase: AddQuestionToFavouriteUseCase,
+    private val getFavouriteQuestionsUseCase: GetFavouriteQuestionsUseCase,
+    private val deleteQuestionFromFavouriteUseCase: DeleteQuestionFromFavouriteUseCase
 ) : ViewModel() {
 
     private var answeredJob: Job = Job()
@@ -70,7 +69,7 @@ class QuestionsWithAnswersViewModel(
         val isAiFeedbackLoading: Boolean = false,
         val isQuestionLoading: Boolean = false,
         val directionInIt: String = "",
-        val favouriteAnswersAndQuestions: List<QuestionWithAnswerEntity> = listOf(),
+        val favouriteAnswersAndQuestions: List<QuestionEntity> = listOf(),
         val isQuestionFavourite: Boolean = false,
         val currentNumberOfQuestion: Int = 0,
 
@@ -135,6 +134,7 @@ class QuestionsWithAnswersViewModel(
                         correctAnswerText = "",
                         shouldBeCorrectAnswerBeShown = false,
                         shouldBeAiFeedbackBeShown = false,
+                        isQuestionFavourite = false,
                         userAnswerText = "",
                         aiFeedBack = AnswerAiFeedbackEntity(
                             ratingFromAi = 0,
@@ -150,7 +150,7 @@ class QuestionsWithAnswersViewModel(
 
                 viewModelScope.launch {
                     val questionName =
-                        state.value.favouriteAnswersAndQuestions.map { it.questionEntity.questionContent }
+                        state.value.favouriteAnswersAndQuestions.map { it.questionContent }
                     if (!questionName.contains(state.value.questionText)) {
                         addQuestionToFavourite(true)
                         _state.update {
@@ -159,7 +159,7 @@ class QuestionsWithAnswersViewModel(
                             )
                         }
                     } else {
-                        deleteQuestionWithAnswerFromFavouriteUseCase(
+                        deleteQuestionFromFavouriteUseCase(
                             state.value.questionText
                         )
                         _state.update {
@@ -360,17 +360,12 @@ class QuestionsWithAnswersViewModel(
     }
 
     private suspend fun addQuestionToFavourite(isSavedByUser: Boolean) {
-        addQuestionWithAnswerToFavouriteUseCase(
-            questionWithAnswerEntity = QuestionWithAnswerEntity(
-                questionEntity = QuestionEntity(
-                    questionTopic = state.value.topicOfQuestion,
-                    questionContent = state.value.questionText,
-                    categoryName = state.value.directionInIt,
-                    gradeName = state.value.grade
-                ),
-                correctAnswerEntity = CorrectAnswerEntity(
-                    answerContent = state.value.correctAnswerText
-                )
+        addQuestionToFavouriteUseCase(
+            QuestionEntity(
+                questionTopic = state.value.topicOfQuestion,
+                questionContent = state.value.questionText,
+                categoryName = state.value.directionInIt,
+                gradeName = state.value.grade,
             ),
             isSavedByUser = isSavedByUser
         )
@@ -575,9 +570,9 @@ class QuestionsWithAnswersViewModel(
 
     init {
         viewModelScope.launch {
-            loadFavouriteQuestionsWithAnswerUseCase().collect { listOfFavouriteQuestions ->
+            getFavouriteQuestionsUseCase().collect { listOfFavouriteQuestions ->
                 val questionsNames =
-                    listOfFavouriteQuestions.map { it.questionEntity.questionContent }
+                    listOfFavouriteQuestions.map { it.questionContent }
                 if (questionsNames.contains(state.value.questionText) && state.value.questionText.isNotEmpty()) {
                     _state.update { it.copy(isQuestionFavourite = true) }
                 } else _state.update { it.copy(isQuestionFavourite = false) }

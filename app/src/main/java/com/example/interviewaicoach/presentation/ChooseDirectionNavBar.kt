@@ -32,7 +32,7 @@ import com.example.interviewaicoach.presentation.theme.sizeOfIconsButton
 
 @Preview
 @Composable
-fun ChooseDirectionControlPanel(
+fun ChooseDirectionNavBar(
     modifier: Modifier = Modifier,
     onSettingsIconClicked: () -> Unit = {},
     onFavouriteIconClicked: () -> Unit = {},

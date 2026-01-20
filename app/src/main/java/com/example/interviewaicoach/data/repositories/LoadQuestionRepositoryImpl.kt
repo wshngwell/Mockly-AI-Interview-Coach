@@ -1,17 +1,15 @@
 package com.example.interviewaicoach.data.repositories
 
-import com.example.interviewaicoach.data.local.QuestionsWithAnswersDao
+import com.example.interviewaicoach.data.local.QuestionsDao
 import com.example.interviewaicoach.data.mappers.mapCategoryWithGradeToChatRequestForQuestion
 import com.example.interviewaicoach.data.mappers.mapToQuestionEntity
 import com.example.interviewaicoach.data.mappers.retrievingContentFromString
 import com.example.interviewaicoach.data.remote.ApiService
-import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatStreamChunkDto
 import com.example.interviewaicoach.data.remote.parseToLoadingException
 import com.example.interviewaicoach.domain.entities.LoadingException
 import com.example.interviewaicoach.domain.entities.TResult
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.repositories.LoadQuestionRepository
-import com.example.interviewaicoach.presentation.GsonUtil.fromJson
 import com.example.interviewaicoach.utils.myLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -19,11 +17,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
 
 class LoadQuestionRepositoryImpl(
     private val apiService: ApiService,
-    private val questionsWithAnswersDao: QuestionsWithAnswersDao
+    private val questionsDao: QuestionsDao
 ) : LoadQuestionRepository {
 
     override fun loadQuestion(
@@ -33,7 +30,7 @@ class LoadQuestionRepositoryImpl(
         runCatching {
 
             val savedBySystem =
-                questionsWithAnswersDao.getAllOnlySystemSavedQuestionsContentFromDb(categoryName, gradeName)
+                questionsDao.getAllOnlySystemSavedQuestionsContentFromDb(categoryName, gradeName)
                     .takeLast(150)
 
             val responseBody = apiService.sendPromt(
