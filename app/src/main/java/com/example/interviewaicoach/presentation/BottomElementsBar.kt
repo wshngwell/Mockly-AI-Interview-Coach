@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
-import com.example.interviewaicoach.domain.entities.LoadingException
 import com.example.interviewaicoach.presentation.correctAnswerScreenElements.IconWithText
 import com.example.interviewaicoach.presentation.correctAnswerScreenElements.TextWithIconButton
 import com.example.interviewaicoach.presentation.theme.bottomButtonSaveQuestionScreenVerticalPadding
@@ -67,6 +66,7 @@ fun BottomElementsBar(
     isRecording: Boolean = false,
     sizeOfLeftIcon: Dp = sizeOfIcons,
     isIconSecondButtonLeft: Boolean = false,
+    answeringFromFavouriteMode: Boolean = false,
 ) {
     Row(
         modifier = modifier
@@ -144,10 +144,17 @@ fun BottomElementsBar(
             .padding(
                 bottomButtonSaveQuestionScreenVerticalPadding
             )
-        if (isIconSecondButtonLeft) {
+        if (isIconSecondButtonLeft && !answeringFromFavouriteMode) {
             IconWithText(
                 modifier = secondButtonModifier,
                 imageVector = rightIcon,
+                leftText = rightElementText,
+                colorOfIcon = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightIconColor,
+                textColor = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightTextColor,
+            )
+        } else if (answeringFromFavouriteMode) {
+            IconWithText(
+                modifier = secondButtonModifier,
                 leftText = rightElementText,
                 colorOfIcon = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightIconColor,
                 textColor = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightTextColor,

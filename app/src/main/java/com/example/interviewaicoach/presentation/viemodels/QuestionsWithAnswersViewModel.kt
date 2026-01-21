@@ -34,6 +34,8 @@ import kotlinx.coroutines.launch
 class QuestionsWithAnswersViewModel(
     private val directionInIt: String,
     private val gradeName: String,
+    private val answeringFromFavouriteMode: Boolean,
+    private val questionEntity: QuestionEntity?,
     private val startRecordingUseCase: StartRecordingUseCase,
     private val stopRecordingUseCase: StopRecordingUseCase,
     private val transcribeAudioUseCase: TranscribeAudioUseCase,
@@ -58,6 +60,9 @@ class QuestionsWithAnswersViewModel(
         ),
         val userAnswerText: String = "",
         val isRecording: Boolean = false,
+
+        val answeringFromFavouriteMode: Boolean,
+
         val correctAnswerText: String = "",
         val questionText: String = "",
         val topicOfQuestion: String = "",
@@ -93,7 +98,15 @@ class QuestionsWithAnswersViewModel(
         }
     }
 
-    private val _state = MutableStateFlow(State(directionInIt = directionInIt, grade = gradeName))
+    private val _state = MutableStateFlow(
+        State(
+            directionInIt = directionInIt,
+            grade = gradeName,
+            answeringFromFavouriteMode = answeringFromFavouriteMode,
+            questionText = questionEntity?.questionContent ?: "",
+            topicOfQuestion = questionEntity?.questionTopic ?: "",
+        )
+    )
 
     val state = _state.asStateFlow()
     private val _event = SingleFlowEvent<Event>(viewModelScope)
@@ -105,10 +118,12 @@ class QuestionsWithAnswersViewModel(
         data object AddOrDeleteToFavourite : Intent
 
         data object LoadNextQuestion : Intent
+        data object BackToFavouriteScreen : Intent
         data object SendUserAnswer : Intent
         data object ShowCorrectAnswer : Intent
         data object StartRecording : Intent
         data object EndInterview : Intent
+        data object AnswerAgain : Intent
         data object Retry : Intent
     }
 
@@ -121,6 +136,9 @@ class QuestionsWithAnswersViewModel(
             val numberOfSavedQuestions: Int,
             val numberOfVoiceAnsweredQuestions: Int
         ) : Event
+
+        data object BackToFavouriteScreen : Event
+
     }
 
     fun sendIntent(intent: Intent) {
@@ -160,7 +178,7 @@ class QuestionsWithAnswersViewModel(
                         }
                     } else {
                         deleteQuestionFromFavouriteUseCase(
-                            state.value.questionText
+                            listOf(state.value.questionText)
                         )
                         _state.update {
                             it.copy(
@@ -356,6 +374,22 @@ class QuestionsWithAnswersViewModel(
 
             }
 
+            Intent.AnswerAgain -> {
+                _state.update {
+                    it.copy(
+                        shouldBeCorrectAnswerBeShown = false,
+                        shouldBeAiFeedbackBeShown = false,
+                        userAnswerText = "",
+                        aiFeedBack = AnswerAiFeedbackEntity(
+                            ratingFromAi = 0,
+                            goodPartAnswer = listOf(),
+                            badPartAnswer = listOf()
+                        )
+                    )
+                }
+            }
+
+            Intent.BackToFavouriteScreen -> _event.emit(Event.BackToFavouriteScreen)
         }
     }
 
@@ -541,7 +575,7 @@ class QuestionsWithAnswersViewModel(
                         _state.update {
                             it.copy(
                                 isQuestionVisible = true,
-                                topicOfQuestion = "#${state.value.currentNumberOfQuestion} ${questionEntity.data.questionTopic}",
+                                topicOfQuestion = questionEntity.data.questionTopic,
                                 questionText = questionEntity.data.questionContent,
                             )
                         }
@@ -552,7 +586,18 @@ class QuestionsWithAnswersViewModel(
     }
 
     init {
-        loadingQuestionWithAnswer()
+        if (!state.value.answeringFromFavouriteMode) {
+            loadingQuestionWithAnswer()
+        } else {
+            _state.update {
+                it.copy(
+                    isQuestionVisible = true,
+                )
+            }
+            answeredJob = viewModelScope.launch {
+                loadAnswer()
+            }
+        }
     }
 
     private fun loadingQuestionWithAnswer() {

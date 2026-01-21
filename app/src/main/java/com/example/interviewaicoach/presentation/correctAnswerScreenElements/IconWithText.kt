@@ -47,7 +47,7 @@ import com.example.interviewaicoach.presentation.theme.widthBetweenIconAndTextIn
 @Composable
 fun IconWithText(
     modifier: Modifier = Modifier,
-    imageVector: ImageVector = Icons.Outlined.BookmarkBorder,
+    imageVector: ImageVector? = null,
     leftText: String = stringResource(R.string.save_question),
     rightText: String = "",
     colorOfIcon: Color = lightIconColor,
@@ -65,12 +65,14 @@ fun IconWithText(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                modifier = Modifier.size(sizeOfIcon),
-                imageVector = imageVector,
-                contentDescription = stringResource(R.string.exit_from_interview),
-                tint = colorOfIcon
-            )
+            if (imageVector != null) {
+                Icon(
+                    modifier = Modifier.size(sizeOfIcon),
+                    imageVector = imageVector,
+                    contentDescription = stringResource(R.string.exit_from_interview),
+                    tint = colorOfIcon
+                )
+            }
             Spacer(modifier = Modifier.width(widthBetweenIconAndTextInBottomButton))
             Row(
                 modifier = if (rightText.isEmpty()) Modifier else Modifier.fillMaxWidth(),

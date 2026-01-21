@@ -52,7 +52,11 @@
     <string name="you_saved_this_numberOfQuestions">Вы сохранили себе %1$d вопросов</string>
     <string name="onMainScreen">На главную</string>
     <string name="retry">Пройти еще раз</string>
+    <string name="retry_answer">Ответить заново</string>
+
     <string name="retry_error">Повторить</string>
+    <string name="empty_fav_list_heading">Нет сохраненных вопросов</string>
+    <string name="empty_fav_list_desc">Начните собеседование прямо сейчас и сохраняйте сложные вопросы.</string>
     <string name="main">Главная</string>
     <string name="saved_questions">Сохраненные вопросы</string>
     <string name="settings">настройки</string>
@@ -73,4 +77,7 @@
     <string name="generationError_desc">Нажмите «Повторить» или перезапустите собеседование.</string>
     <string name="networkError_desc">Подключитесь к сети, чтобы продолжить..</string>
     <string name="generation_error_icon">Иконка ошибки генерации</string>
+    <string name="choose">Выбрать</string>
+    <string name="delete_all">Удалить все</string>
+    <string name="selected_quest_number">%1$d вопроса</string>
 </resources>

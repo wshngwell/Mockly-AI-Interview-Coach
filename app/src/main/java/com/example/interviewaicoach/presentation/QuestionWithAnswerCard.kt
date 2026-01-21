@@ -47,6 +47,8 @@ fun ColumnScope.QuestionWithAnswerCard(
     shouldBeCorrectAnswerBeShown: Boolean = false,
     questionText: String = mockQuesstionText,
     correctAnswer: String = mockAnswerText,
+    currentNumberOfQuestion: Int = 1,
+    answeringFromFavouriteMode: Boolean = false,
     answerFromAi: AnswerAiFeedbackEntity = mockAnswerAiFeedbackEntity,
     onRetryAfterError: () -> Unit = {}
 ) {
@@ -72,7 +74,7 @@ fun ColumnScope.QuestionWithAnswerCard(
     ) {
         if (error != null) {
             Column(
-                modifier.verticalScroll(errorScrollState)
+                Modifier.verticalScroll(errorScrollState)
             ) {
                 ErrorCard(
                     modifier = Modifier
@@ -100,7 +102,7 @@ fun ColumnScope.QuestionWithAnswerCard(
                 } else {
                     Text(
                         modifier = Modifier.padding(bottom = numberAndTopicOfQuestionBottomPadding),
-                        text = topicOfQuestionText,
+                        text = if (!answeringFromFavouriteMode) "#$currentNumberOfQuestion $topicOfQuestionText" else topicOfQuestionText,
                         fontFamily = mainAppFontFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = numberAndTopicOfQuestionColor,

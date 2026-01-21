@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.theme.BottomButtonFontSize
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
@@ -30,6 +31,7 @@ fun TextWithIconButton(
     imageVector: ImageVector = Icons.Outlined.BookmarkBorder,
     textOnButton: String = stringResource(R.string.save_question),
     colorOfIcon: Color = lightIconColor,
+    textFontSize:Int = BottomButtonFontSize,
     textColor: Color = buttonsTextColor,
 ) {
 
@@ -46,7 +48,7 @@ fun TextWithIconButton(
             Text(
                 text = textOnButton,
                 color = textColor,
-                fontSize = BottomButtonFontSize,
+                fontSize = textFontSize.sp,
                 fontWeight = FontWeight.SemiBold,
             )
             Spacer(modifier = Modifier.width(widthBetweenIconAndTextInBottomButton))

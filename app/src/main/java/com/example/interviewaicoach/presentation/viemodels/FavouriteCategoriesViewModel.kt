@@ -9,12 +9,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class FavouriteCategoriesViewModel(
-    private val getFavouriteCategoriesUseCase: GetFavouriteCategoriesUseCase
-) : ViewModel() {
+class FavouriteCategoriesViewModel : ViewModel() {
 
     data class State(
-        val listOfCategoriesNames: List<String> = listOf(),
         val currentCategory: String? = null
     )
 
@@ -50,18 +47,6 @@ class FavouriteCategoriesViewModel(
             }
 
             Intent.OnCloseScreen -> _event.emit(Event.OnNavigateToChooseDirectionsScreen)
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-            getFavouriteCategoriesUseCase().collect { listOfCategoriesNames ->
-                _state.update {
-                    it.copy(
-                        listOfCategoriesNames = listOfCategoriesNames
-                    )
-                }
-            }
         }
     }
 }

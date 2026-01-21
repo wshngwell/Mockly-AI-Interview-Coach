@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,16 +25,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
+import com.example.interviewaicoach.presentation.correctAnswerScreenElements.TextWithIconButton
 import com.example.interviewaicoach.presentation.theme.answersFontSize
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForMainButtons
 import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
+import com.example.interviewaicoach.presentation.theme.disabledColorForTextForMainButton
 import com.example.interviewaicoach.presentation.theme.gradientBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.networkErrorIconHeight
 import com.example.interviewaicoach.presentation.theme.networkErrorIconWidth
 import com.example.interviewaicoach.presentation.theme.paramsForMainButtonPadding
 import com.example.interviewaicoach.presentation.theme.questionFontSize
+import com.example.interviewaicoach.presentation.theme.resultListItemsFontSize
 import com.example.interviewaicoach.presentation.theme.unselectedBottomBarElementColor
 
 @Preview
@@ -43,6 +48,7 @@ fun ErrorCard(
     errorDescriptionId: Int = R.string.generationError_desc,
     imageResourceId: Int = R.drawable.generation_error,
     buttonText: String = stringResource(R.string.retry_error),
+    isFavouriteQuestionsEmptyError: Boolean = false,
     onButtonClicked: () -> Unit = {},
 ) {
 
@@ -77,20 +83,39 @@ fun ErrorCard(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(32.dp))
+        if (isFavouriteQuestionsEmptyError) {
+            TextWithIconButton(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(clipParamsForMainButtons))
+                    .background(
+                        brush = gradientBrushForMainButton
+                    )
+                    .clickable {
+                        onButtonClicked()
+                    }
+                    .padding(paramsForMainButtonPadding),
+                imageVector = Icons.AutoMirrored.Outlined.ArrowForward,
+                textOnButton = buttonText,
+                colorOfIcon = buttonsTextColor,
+                textFontSize = resultListItemsFontSize,
+                textColor = buttonsTextColor,
+            )
+        } else {
+            MainAppButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(clipParamsForMainButtons))
+                    .background(
+                        brush = gradientBrushForMainButton
+                    )
+                    .clickable {
+                        onButtonClicked()
+                    }
+                    .padding(paramsForMainButtonPadding),
+                text = buttonText,
+                fontColor = buttonsTextColor
+            )
 
-        MainAppButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(clipParamsForMainButtons))
-                .background(
-                    brush = gradientBrushForMainButton
-                )
-                .clickable {
-                    onButtonClicked()
-                }
-                .padding(paramsForMainButtonPadding),
-            text = buttonText,
-            fontColor = buttonsTextColor
-        )
+        }
     }
 }

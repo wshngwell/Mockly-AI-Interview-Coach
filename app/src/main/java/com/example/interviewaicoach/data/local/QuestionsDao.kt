@@ -16,7 +16,7 @@ interface QuestionsDao {
         gradeName: String
     ): List<String>
 
-    @Query("SELECT DISTINCT categoryName FROM QuestionDbModel")
+    @Query("SELECT DISTINCT categoryName FROM QuestionDbModel WHERE isSavedByUser = 1")
     fun getAllCategoriesFromDb(): Flow<List<String>>
 
     @Query("SELECT DISTINCT * FROM QuestionDbModel WHERE isSavedByUser = 1")
@@ -25,7 +25,7 @@ interface QuestionsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addQuestionToDb(questionDbModel: QuestionDbModel)
 
-    @Query("DELETE FROM QuestionDbModel WHERE questionContent = :questionName")
-    suspend fun deleteQuestionFromDb(questionName: String)
+    @Query("DELETE FROM QuestionDbModel WHERE questionContent IN (:listOfQuestionNames)")
+    suspend fun deleteQuestionFromDb(listOfQuestionNames: List<String>)
 
 }

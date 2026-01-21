@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -119,7 +120,9 @@ private fun UI(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         ) {
-            state.listOfCategoriesNames.forEach {
+            val context = LocalContext.current
+
+            DirectionUiModel.entries.forEach {
                 FavouriteQuestionCard(
                     modifier = Modifier
                         .padding(
@@ -128,12 +131,12 @@ private fun UI(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(clipParamsForQuestionWithAnswerBox))
                         .background(color = questionWithAnswerCardColor)
-                        .clickable { intent(Intent.OnCategoryClicked(it)) }
+                        .clickable { intent(Intent.OnCategoryClicked(context.getString(it.directionNameId))) }
                         .padding(
                             horizontal = questionWIthAnswerCardInnerPadding,
                             vertical = favouriteQuestionCardCategoryHorizontalPadding
                         ),
-                    text = it
+                    text = context.getString(it.directionNameId)
                 )
             }
 

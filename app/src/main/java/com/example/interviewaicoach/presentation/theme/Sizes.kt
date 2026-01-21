@@ -27,6 +27,8 @@ val resultCardTopOuterPadding = questionWIthAnswerCardTopOuterPadding
 val questionWIthAnswerCardInnerPadding = 20.dp
 
 val horizontalFavQuestionsCardPadding = 12.dp
+val dropDownItemPadding = 16.dp
+val deleteCountFontSize = 16
 val resultCardInnerPadding = questionWIthAnswerCardInnerPadding
 val numberAndTopicOfQuestionBottomPadding = 20.dp
 val resultsCommonPaddingVertical = 8.dp
@@ -36,11 +38,13 @@ val resultScreenHorizontalDividerVerticalPadding = 20.dp
 val alertDialogInnerPadding = resultScreenHorizontalDividerVerticalPadding
 val chooseDirectionFontSize = 18.sp
 val alertDialogTitleFontSize = chooseDirectionFontSize
-val alertDialogDescriptionFontSize = answersFontSize
+val checkBoxRadiusBorder = 4.dp
+val checkBoxRadiusBorderSize = 1.dp
+val sizeOfCheckIcon = 20.dp
 val interViewButtonParamsFontSize = 18
 val aiFeedbackTextFontSize = 16.sp
 
-val BottomButtonFontSize = 14.sp
+val BottomButtonFontSize = 14
 val resultListItemsFontSize = 16
 val favouriteQuestionCardCategoryHorizontalPadding = screenHorizontalPadding
 
@@ -52,6 +56,7 @@ val widthBetweenIconAndTextInBottomButton = 8.dp
 
 val paramsForMainButtonPadding = 15.dp
 val bottomButtonSaveQuestionScreenVerticalPadding = 12.dp
+val deleteIconWithTextPadding = 8.dp
 val bottomResultScreenPadding = 12.dp
 val bottomButtonRecordingPadding = 15.dp
 val bottomButtonNextQuestionStartPadding = 10.dp
@@ -76,7 +81,7 @@ val borderOfSelectedInterviewParam = 1.dp
 val borderOfRecordingStateView = borderOfSelectedInterviewParam
 val borderOfUnselectedInterviewParam = 0.dp
 
-val bottomElementsCorrectAnswerScreenHeight = 92.dp
+val dropDownMenuRadiusClip = 16.dp
 val bottomElementsCorrectAnswerScreenVerticalPadding = 24.dp
 
 val verticalPaddingOfAiFeedBackOptions = 4.dp

@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.FiberManualRecord
 import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Loop
 import androidx.compose.material.icons.outlined.Mic
@@ -24,7 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.interviewaicoach.R
 import com.example.interviewaicoach.di.paramsForQuestionWithAnswerViewModel
+import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
+import com.example.interviewaicoach.presentation.GsonUtil.fromJson
+import com.example.interviewaicoach.presentation.GsonUtil.toJson
 import com.example.interviewaicoach.presentation.destinations.ChooseDirectionScreenDestination
+import com.example.interviewaicoach.presentation.destinations.FavouriteQuestionsInCategoryScreenDestination
 import com.example.interviewaicoach.presentation.destinations.QuestionWithAnswersScreenDestination
 import com.example.interviewaicoach.presentation.theme.borderOfRecordingStateView
 import com.example.interviewaicoach.presentation.theme.clipParamsForBottomRecordingBoxOnQuestionsScreen
@@ -52,7 +58,14 @@ import org.koin.androidx.compose.koinViewModel
 fun getQuestionWithAnswersScreenDestination(
     directionInIt: String,
     gradeName: String,
-) = QuestionWithAnswersScreenDestination(directionInIt, gradeName)
+    answeringFromFavouriteMode: Boolean = false,
+    questionEntity: QuestionEntity? = null,
+) = QuestionWithAnswersScreenDestination(
+    directionInIt,
+    gradeName,
+    answeringFromFavouriteMode,
+    questionEntity?.toJson()
+)
 
 @RootNavGraph
 @Destination
@@ -60,11 +73,22 @@ fun getQuestionWithAnswersScreenDestination(
 fun QuestionWithAnswersScreen(
     directionInIt: String,
     gradeName: String,
+    answeringFromFavouriteMode: Boolean = false,
+    questionEntityJson: String? = null,
     navigator: DestinationsNavigator
 ) {
 
     val viewModel = koinViewModel<QuestionsWithAnswersViewModel>(
-        parameters = { paramsForQuestionWithAnswerViewModel(directionInIt, gradeName) }
+
+        parameters = {
+            val questionEntity = questionEntityJson?.fromJson<QuestionEntity>()
+            paramsForQuestionWithAnswerViewModel(
+                directionInIt,
+                gradeName,
+                answeringFromFavouriteMode,
+                questionEntity
+            )
+        }
     )
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -95,6 +119,17 @@ fun QuestionWithAnswersScreen(
                         popUpTo(ChooseDirectionScreenDestination)
                     }
                 }
+
+                is Event.BackToFavouriteScreen -> {
+                    navigator.navigate(
+                        getFavouriteQuestionsInCategoryScreenDestination(
+                            state.directionInIt
+                        )
+                    ) {
+                        launchSingleTop = true
+                        popUpTo(FavouriteQuestionsInCategoryScreenDestination)
+                    }
+                }
             }
         }
     }
@@ -109,7 +144,7 @@ fun QuestionWithAnswersScreen(
 @Preview
 @Composable
 private fun UI(
-    state: State = State(),
+    state: State = State(answeringFromFavouriteMode = false),
     intent: (Intent) -> Unit = {},
 ) {
     val requestRecordAudio = PermissionLauncher.build(
@@ -134,7 +169,12 @@ private fun UI(
 
         QuestionsNavBar(
             text = "${state.directionInIt} · ${state.grade}",
-            onLeftIconClicked = { intent(Intent.EndInterview) },
+            onLeftIconClicked = {
+                if (state.answeringFromFavouriteMode) intent(Intent.BackToFavouriteScreen) else intent(
+                    Intent.EndInterview
+                )
+            },
+            leftIcon = if (state.answeringFromFavouriteMode) Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Close
         )
         QuestionWithAnswerCard(
             error = state.errorCause,
@@ -147,13 +187,23 @@ private fun UI(
             correctAnswer = state.correctAnswerText,
             shouldBeAiFeedbackBeShown = state.shouldBeAiFeedbackBeShown,
             shouldBeCorrectAnswerBeShown = state.shouldBeCorrectAnswerBeShown,
+            currentNumberOfQuestion = state.currentNumberOfQuestion,
+            answeringFromFavouriteMode = state.answeringFromFavouriteMode,
             onRetryAfterError = { intent(Intent.Retry) }
         )
         if (
             state.shouldBeAiFeedbackBeShown || state.shouldBeCorrectAnswerBeShown
         ) {
             BottomElementsBar(
-                onRightButtonClicked = { intent(Intent.LoadNextQuestion) },
+                onRightButtonClicked = {
+
+                    if (state.answeringFromFavouriteMode) {
+                        intent(Intent.AnswerAgain)
+                    } else {
+                        intent(Intent.LoadNextQuestion)
+                    }
+
+                },
                 onLeftButtonClicked = { intent(Intent.AddOrDeleteToFavourite) },
                 shouldBeButtonsDisabled = state.errorCause != null
                         || state.isCorrectAnswerLoading
@@ -161,13 +211,16 @@ private fun UI(
                 isRecording = state.isRecording,
                 rightIcon = Icons.Outlined.ArrowForward,
                 leftIcon = if (state.isQuestionFavourite) Icons.Outlined.Delete else Icons.Outlined.BookmarkBorder,
-                rightElementText = stringResource(R.string.next_question),
+                rightElementText = if (state.answeringFromFavouriteMode) stringResource(R.string.retry_answer) else stringResource(
+                    R.string.next_question
+                ),
                 leftElementText = if (state.isQuestionFavourite)
                     stringResource(
                         R.string.delete_question
                     ) else stringResource(
                     R.string.save_question
                 ),
+                answeringFromFavouriteMode = state.answeringFromFavouriteMode,
                 leftButtonBrush = questionsWithAnswersBottomButtonsGradient,
                 rightButtonBrush = questionsWithAnswersBottomButtonsGradient,
             )

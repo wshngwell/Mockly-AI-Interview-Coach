@@ -13,6 +13,7 @@ retrofit = "2.11.0"
 logging = "4.9.3"
 
 ksp = "2.0.21-1.0.27"
+foundationLayout = "1.10.1"
 
 
 
@@ -36,6 +37,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 logging-retrofit = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

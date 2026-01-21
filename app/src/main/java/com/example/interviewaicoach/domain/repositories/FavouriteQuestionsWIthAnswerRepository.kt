@@ -14,6 +14,6 @@ interface FavouriteQuestionsWIthAnswerRepository {
 
     val loadCategoriesNamesFromFavouriteQuestions: SharedFlow<List<String>>
 
-    suspend fun deleteFromFavouriteQuestion(questionName: String)
+    suspend fun deleteFromFavouriteQuestion(listOfQuestionNames: List<String>)
 
 }

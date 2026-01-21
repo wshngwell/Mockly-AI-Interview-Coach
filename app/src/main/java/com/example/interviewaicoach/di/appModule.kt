@@ -9,6 +9,7 @@ import com.example.interviewaicoach.data.repositories.AnswersRepositoryImpl
 import com.example.interviewaicoach.data.repositories.LoadQuestionRepositoryImpl
 import com.example.interviewaicoach.data.repositories.RecordAudioRepositoryImpl
 import com.example.interviewaicoach.data.repositories.SpeechToTextRepositoryImpl
+import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.repositories.AnswerRepository
 import com.example.interviewaicoach.domain.repositories.FavouriteQuestionsWIthAnswerRepository
 import com.example.interviewaicoach.domain.repositories.LoadQuestionRepository
@@ -131,7 +132,7 @@ val appModule = module {
             favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
         )
     }
-    viewModel<QuestionsWithAnswersViewModel> { (directionInIt: String, gradeName: String) ->
+    viewModel<QuestionsWithAnswersViewModel> { (directionInIt: String, gradeName: String, answeringFromFavouriteMode: Boolean, questionEntity: QuestionEntity?) ->
         QuestionsWithAnswersViewModel(
             startRecordingUseCase = get<StartRecordingUseCase>(),
             stopRecordingUseCase = get<StopRecordingUseCase>(),
@@ -144,18 +145,19 @@ val appModule = module {
             addQuestionToFavouriteUseCase = get<AddQuestionToFavouriteUseCase>(),
             getFavouriteQuestionsUseCase = get<GetFavouriteQuestionsUseCase>(),
             deleteQuestionFromFavouriteUseCase = get<DeleteQuestionFromFavouriteUseCase>(),
+            answeringFromFavouriteMode = answeringFromFavouriteMode,
+            questionEntity = questionEntity,
         )
     }
     viewModel<FavouriteCategoriesViewModel> {
-        FavouriteCategoriesViewModel(
-            getFavouriteCategoriesUseCase = get<GetFavouriteCategoriesUseCase>()
-        )
+        FavouriteCategoriesViewModel()
     }
 
     viewModel<FavouriteQuestionsInCategoryScreenViewModel> { (categoryName: String) ->
         FavouriteQuestionsInCategoryScreenViewModel(
             categoryName = categoryName,
-            getFavouriteQuestionsUseCase = get<GetFavouriteQuestionsUseCase>()
+            getFavouriteQuestionsUseCase = get<GetFavouriteQuestionsUseCase>(),
+            deleteQuestionFromFavouriteUseCase = get<DeleteQuestionFromFavouriteUseCase>()
         )
     }
 
@@ -182,8 +184,13 @@ val appModule = module {
     }
 }
 
-fun paramsForQuestionWithAnswerViewModel(directionInIt: String, gradeName: String) =
-    parametersOf(directionInIt, gradeName)
+fun paramsForQuestionWithAnswerViewModel(
+    directionInIt: String,
+    gradeName: String,
+    answeringFromFavouriteMode: Boolean = false,
+    questionEntity: QuestionEntity? = null,
+) =
+    parametersOf(directionInIt, gradeName, answeringFromFavouriteMode, questionEntity)
 
 fun paramsForFavouriteQuestionsInCategoryScreenViewModel(categoryName: String) =
     parametersOf(categoryName)

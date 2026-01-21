@@ -68,8 +68,8 @@ class FavouriteQuestionsWIthAnswerRepositoryImpl(
             )
         }
 
-    override suspend fun deleteFromFavouriteQuestion(questionName: String) =
+    override suspend fun deleteFromFavouriteQuestion(listOfQuestionNames: List<String>) =
         withContext(Dispatchers.IO) {
-            questionsDao.deleteQuestionFromDb(questionName)
+            questionsDao.deleteQuestionFromDb(listOfQuestionNames)
         }
 }

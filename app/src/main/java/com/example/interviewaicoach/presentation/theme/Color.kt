@@ -33,6 +33,7 @@ val interviewParamsBoxColor = Color(0xFF1A1A1A)
 val lightGreenTextColor = Color(0xFF079256)
 val lightRedTextColor = Color(0xFFFA9292)
 val pink = Color(0xFFD758A7)
+val checkBoxBorderColor = Color(0xFF3A3A3A)
 
 val gradientBrushForMainButton = Brush.verticalGradient(
     colors = listOf(
@@ -48,6 +49,7 @@ val disabledGradientBrushForMainButton = Brush.horizontalGradient(
 )
 
 val questionsWithAnswersBottomButtonsColor = Color(0xFF282828)
+val deleteAllFontColor = Color(0xFFF16060)
 val lightQuestionsWithAnswersBottomButtonsColor = Color(0xFF505050)
 val questionsWithAnswersBottomButtonsGradient = Brush.horizontalGradient(
     colors = listOf(

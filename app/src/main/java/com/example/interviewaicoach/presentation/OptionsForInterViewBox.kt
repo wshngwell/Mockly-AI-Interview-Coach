@@ -34,6 +34,7 @@ import com.example.interviewaicoach.presentation.theme.gradientBrushForMainButto
 import com.example.interviewaicoach.presentation.theme.myBackGround
 import com.example.interviewaicoach.presentation.theme.paramsForMainButtonPadding
 import com.example.interviewaicoach.presentation.theme.transparentGradientBrush
+import androidx.compose.ui.res.stringResource
 
 
 @Composable
@@ -69,8 +70,8 @@ fun OptionsForInterViewBox(
                         .clip(RoundedCornerShape(clipParamsForMainButtons))
                         .background(color = interviewParamsBoxColor)
                         .border(
-                            width = if (currentSelectedOption == context.getString(stringId)) borderOfSelectedInterviewParam else borderOfUnselectedInterviewParam,
-                            brush = if (currentSelectedOption == context.getString(stringId)) gradientBrushForMainButton else transparentGradientBrush,
+                            width = if (currentSelectedOption == stringResource(stringId)) borderOfSelectedInterviewParam else borderOfUnselectedInterviewParam,
+                            brush = if (currentSelectedOption == stringResource(stringId)) gradientBrushForMainButton else transparentGradientBrush,
                             shape = RoundedCornerShape(clipParamsForMainButtons)
                         )
                         .clickable { onParamClicked(context.getString(stringId)) }
@@ -79,7 +80,7 @@ fun OptionsForInterViewBox(
                 {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = context.getString(stringId),
+                        text = stringResource(stringId),
                         textAlign = TextAlign.Center,
                     )
                 }
