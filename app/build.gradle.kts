@@ -1,3 +1,4 @@
+import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
@@ -26,10 +27,8 @@ android {
         val properties = Properties()
         properties.load(secretsFile.inputStream())
 
-        // Return an empty string in case of property being null
         val apiKey = properties.getProperty("apikey") ?: ""
 
-        // For accessing the property using BuildConfig
         buildConfigField(
             type = "String",
             name = "API_KEY",
@@ -40,14 +39,31 @@ android {
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
+    signingConfigs {
+        val keystorePropertiesFile = rootProject.file("app/keystore.properties")
+        if (keystorePropertiesFile.exists()) {
+            create("release") {
+                val props = Properties().apply { load(FileInputStream(keystorePropertiesFile)) }
+                keyAlias = props["keyAlias"].toString()
+                keyPassword = props["keyPassword"].toString()
+                storeFile = file(props["storeFile"].toString())
+                storePassword = props["storePassword"].toString()
+            }
+        }
+    }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isDebuggable = true
         }
     }
     compileOptions {
