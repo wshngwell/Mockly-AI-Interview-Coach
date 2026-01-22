@@ -71,7 +71,7 @@ fun getCurrentTheme(
 
     val themeType = sharedPref.getString(THEME_TYPE_KEY, null)?.let { themeTypeName ->
         ThemeType.entries.find { it.name == themeTypeName }
-    } ?: ThemeType.LIGHT
+    } ?: ThemeType.DARK
 
     updateCurrentThemeMode(themeType = themeType)
 
