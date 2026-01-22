@@ -22,10 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
-import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
+import com.example.interviewaicoach.presentation.theme.appBarIconColor
 import com.example.interviewaicoach.presentation.theme.directionOfInterviewFontSize
-import com.example.interviewaicoach.presentation.theme.lightIconColor
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.sizeOfIcons
 import com.example.interviewaicoach.presentation.theme.sizeOfIconsButton
 
@@ -47,8 +47,8 @@ fun ChooseDirectionNavBar(
             modifier = Modifier.weight(1f),
             text = text,
             fontFamily = mainAppFontFamily,
-            fontWeight = FontWeight.Bold,
-            color = darkThemeTextColor,
+            fontWeight = FontWeight.SemiBold,
+            color = primaryTextColor,
             fontSize = directionOfInterviewFontSize
         )
         IconButton(
@@ -61,7 +61,7 @@ fun ChooseDirectionNavBar(
                 modifier = Modifier.size(sizeOfIcons),
                 imageVector = Icons.Outlined.BookmarkBorder,
                 contentDescription = stringResource(R.string.saved_questions),
-                tint = lightIconColor
+                tint = appBarIconColor
             )
         }
         Spacer(modifier = Modifier.width(20.dp))
@@ -77,7 +77,7 @@ fun ChooseDirectionNavBar(
                     .size(sizeOfIcons),
                 imageVector = Icons.Outlined.Settings,
                 contentDescription = stringResource(R.string.settings),
-                tint = lightIconColor
+                tint = appBarIconColor
             )
         }
 

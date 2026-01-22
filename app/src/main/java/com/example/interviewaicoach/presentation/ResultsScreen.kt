@@ -30,20 +30,20 @@ import com.example.interviewaicoach.di.paramsForResultScreeViewModel
 import com.example.interviewaicoach.presentation.destinations.ChooseDirectionScreenDestination
 import com.example.interviewaicoach.presentation.destinations.ChooseGradeScreenDestination
 import com.example.interviewaicoach.presentation.destinations.ResultsScreenDestination
-import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
 import com.example.interviewaicoach.presentation.theme.finalResultCommonContentHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.finalResultIconSize
 import com.example.interviewaicoach.presentation.theme.gradientBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.myBackGround
-import com.example.interviewaicoach.presentation.theme.numberAndTopicOfQuestionColor
 import com.example.interviewaicoach.presentation.theme.numberAndTopicOfQuestionFontSize
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.questionFontSize
 import com.example.interviewaicoach.presentation.theme.questionsWithAnswersBottomButtonsGradient
 import com.example.interviewaicoach.presentation.theme.resultsCommonPaddingVertical
 import com.example.interviewaicoach.presentation.theme.screenBottomAdditionalPadding
 import com.example.interviewaicoach.presentation.theme.screenHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.screenResultsTopPadding
+import com.example.interviewaicoach.presentation.theme.secondaryTextColor
 import com.example.interviewaicoach.presentation.viemodels.ResultScreenViewModel
 import com.example.interviewaicoach.presentation.viemodels.ResultScreenViewModel.State
 import com.ramcosta.composedestinations.annotation.Destination
@@ -176,7 +176,7 @@ private fun UI(
                 text = stringResource(R.string.interview_completed),
                 fontFamily = mainAppFontFamily,
                 fontWeight = FontWeight.Bold,
-                color = darkThemeTextColor,
+                color = primaryTextColor,
                 fontSize = questionFontSize,
                 textAlign = TextAlign.Center
             )
@@ -190,7 +190,7 @@ private fun UI(
                 text = stringResource(R.string.final_text),
                 fontFamily = mainAppFontFamily,
                 fontWeight = FontWeight.Bold,
-                color = numberAndTopicOfQuestionColor,
+                color = secondaryTextColor,
                 fontSize = numberAndTopicOfQuestionFontSize,
                 textAlign = TextAlign.Center
             )

@@ -12,12 +12,15 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.theme.InterviewAiCoachTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_InterviewAiCoach)
+        getLanguage()
         enableEdgeToEdge()
         setContent {
             InterviewAiCoachTheme {

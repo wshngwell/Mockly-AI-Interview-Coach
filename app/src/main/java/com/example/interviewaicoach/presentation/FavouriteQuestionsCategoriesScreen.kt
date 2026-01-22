@@ -23,13 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.destinations.ChooseDirectionScreenDestination
+import com.example.interviewaicoach.presentation.theme.cardColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForQuestionWithAnswerBox
 import com.example.interviewaicoach.presentation.theme.favouriteQuestionCardCategoryHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.horizontalDividerVerticalPadding
 import com.example.interviewaicoach.presentation.theme.myBackGround
 import com.example.interviewaicoach.presentation.theme.questionWIthAnswerCardInnerPadding
 import com.example.interviewaicoach.presentation.theme.questionWIthAnswerCardTopOuterPadding
-import com.example.interviewaicoach.presentation.theme.questionWithAnswerCardColor
 import com.example.interviewaicoach.presentation.theme.screenBottomAdditionalPadding
 import com.example.interviewaicoach.presentation.theme.screenHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.screenTopPadding
@@ -68,6 +68,7 @@ fun FavouriteQuestionsCategoriesScreen(
                 is Event.OnNavigateToChooseDirectionsScreen -> {
                     navigator.navigate(ChooseDirectionScreenDestination) {
                         launchSingleTop = true
+                        popUpTo(ChooseDirectionScreenDestination)
                     }
                 }
 
@@ -109,7 +110,7 @@ private fun UI(
     ) {
         QuestionsNavBar(
             text = stringResource(R.string.my_questions),
-            onLeftIconClicked = { intent(Intent.OnCloseScreen) }
+            onLeftIconClicked = { intent(Intent.OnCloseScreen) },
         )
 
         val scrollState = rememberScrollState()
@@ -130,7 +131,7 @@ private fun UI(
                         )
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(clipParamsForQuestionWithAnswerBox))
-                        .background(color = questionWithAnswerCardColor)
+                        .background(color = cardColor)
                         .clickable { intent(Intent.OnCategoryClicked(context.getString(it.directionNameId))) }
                         .padding(
                             horizontal = questionWIthAnswerCardInnerPadding,

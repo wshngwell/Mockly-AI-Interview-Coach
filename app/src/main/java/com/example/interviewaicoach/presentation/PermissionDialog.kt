@@ -24,19 +24,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
-import com.example.interviewaicoach.presentation.theme.alertDialogColor
-import com.example.interviewaicoach.presentation.theme.alertDialogDismissButtonColor
 import com.example.interviewaicoach.presentation.theme.alertDialogInnerPadding
 import com.example.interviewaicoach.presentation.theme.alertDialogTextOnButtonsFontSize
 import com.example.interviewaicoach.presentation.theme.alertDialogTitleFontSize
 import com.example.interviewaicoach.presentation.theme.answersFontSize
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
+import com.example.interviewaicoach.presentation.theme.cardColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForBottomButtonOnQuestionsScreen
 import com.example.interviewaicoach.presentation.theme.clipParamsForMainButtons
-import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
 import com.example.interviewaicoach.presentation.theme.gradientBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.paramsForMainButtonPadding
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
+import com.example.interviewaicoach.presentation.theme.questionsWithAnswersBottomButtonsGradient
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -55,7 +55,7 @@ fun PermissionDialog(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(clipParamsForBottomButtonOnQuestionsScreen))
-            .background(alertDialogColor)
+            .background(cardColor)
             .padding(alertDialogInnerPadding),
         onDismissRequest = onDismiss,
     ) {
@@ -66,7 +66,7 @@ fun PermissionDialog(
                 text = titleText,
                 fontFamily = mainAppFontFamily,
                 fontWeight = FontWeight.Bold,
-                color = darkThemeTextColor,
+                color = primaryTextColor,
                 fontSize = alertDialogTitleFontSize
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -74,7 +74,7 @@ fun PermissionDialog(
                 text = descriptionText,
                 fontFamily = mainAppFontFamily,
                 fontWeight = FontWeight.Medium,
-                color = darkThemeTextColor,
+                color = primaryTextColor,
                 fontSize = answersFontSize
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -84,12 +84,12 @@ fun PermissionDialog(
                     .height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.SpaceAround
 
-                ) {
+            ) {
                 MainAppButton(
                     modifier = Modifier
                         .fillMaxHeight()
                         .clip(RoundedCornerShape(clipParamsForMainButtons))
-                        .background(alertDialogDismissButtonColor)
+                        .background(questionsWithAnswersBottomButtonsGradient)
                         .clickable { onDismiss() }
                         .padding(paramsForMainButtonPadding),
                     text = dismissButtonText,

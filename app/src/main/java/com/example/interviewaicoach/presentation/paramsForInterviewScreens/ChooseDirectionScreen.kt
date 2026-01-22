@@ -23,9 +23,11 @@ import com.example.interviewaicoach.presentation.ChooseDirectionNavBar
 import com.example.interviewaicoach.presentation.DirectionUiModel
 import com.example.interviewaicoach.presentation.OptionsForInterViewBox
 import com.example.interviewaicoach.presentation.destinations.FavouriteQuestionsCategoriesScreenDestination
+import com.example.interviewaicoach.presentation.destinations.SettingsScreenDestination
 import com.example.interviewaicoach.presentation.theme.chooseDirectionFontSize
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.myBackGround
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.screenBottomAdditionalPadding
 import com.example.interviewaicoach.presentation.theme.screenHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.screenTopPadding
@@ -69,6 +71,12 @@ fun ChooseDirectionScreen(
                         launchSingleTop = true
                     }
                 }
+
+                DirectionScreenViewModel.Event.OnSettingsIconClicked -> {
+                    navigator.navigate(SettingsScreenDestination) {
+                        launchSingleTop = true
+                    }
+                }
             }
         }
     }
@@ -98,7 +106,8 @@ private fun UI(
             )
     ) {
         ChooseDirectionNavBar(
-            onFavouriteIconClicked = { intent(DirectionScreenViewModel.Intent.OnFavouriteIconClicked) }
+            onFavouriteIconClicked = { intent(DirectionScreenViewModel.Intent.OnFavouriteIconClicked) },
+            onSettingsIconClicked = { intent(DirectionScreenViewModel.Intent.OnSettingsIconClicked) }
         )
 
         Column(
@@ -109,8 +118,9 @@ private fun UI(
             Text(
                 text = stringResource(R.string.choose_the_direction),
                 fontFamily = mainAppFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = chooseDirectionFontSize
+                fontWeight = FontWeight.SemiBold,
+                fontSize = chooseDirectionFontSize,
+                color = primaryTextColor
 
             )
             Spacer(modifier = Modifier.height(20.dp))

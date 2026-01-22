@@ -30,14 +30,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.correctAnswerScreenElements.IconWithText
-import com.example.interviewaicoach.presentation.correctAnswerScreenElements.TextWithIconButton
+import com.example.interviewaicoach.presentation.correctAnswerScreenElements.TextWithIcon
+import com.example.interviewaicoach.presentation.theme.bottomBarIconColor
 import com.example.interviewaicoach.presentation.theme.bottomButtonSaveQuestionScreenVerticalPadding
 import com.example.interviewaicoach.presentation.theme.bottomElementsCorrectAnswerScreenVerticalPadding
 import com.example.interviewaicoach.presentation.theme.clipParamsForBottomButtonOnQuestionsScreen
 import com.example.interviewaicoach.presentation.theme.disabledColorForTextForMainButton
 import com.example.interviewaicoach.presentation.theme.disabledGradientBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.gradientBrushForMainButton
-import com.example.interviewaicoach.presentation.theme.lightIconColor
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.sizeOfIcons
 import com.example.interviewaicoach.presentation.theme.transparentGradientBrush
 
@@ -54,10 +55,9 @@ fun BottomElementsBar(
     rightElementText: String = stringResource(R.string.next_question),
     leftElementSecondText: String = stringResource(R.string.max_recording_time),
     leftElementText: String = stringResource(R.string.save_question),
-    leftIconColor: Color = lightIconColor,
-    leftTextColor: Color = lightIconColor,
-    rightIconColor: Color = lightIconColor,
-    rightTextColor: Color = lightIconColor,
+    leftIconColor: Color = bottomBarIconColor,
+    rightIconColor: Color = bottomBarIconColor,
+    rightTextColor: Color = bottomBarIconColor,
     leftButtonBrush: Brush = gradientBrushForMainButton,
     rightButtonBrush: Brush = gradientBrushForMainButton,
     widthOfBorderDp: Dp = 0.dp,
@@ -113,8 +113,11 @@ fun BottomElementsBar(
                 ),
             imageVector = leftIcon,
             leftText = leftElementText,
+            leftTextColor = if (isRecording)
+                primaryTextColor else if (shouldBeButtonsDisabled) disabledColorForTextForMainButton
+            else bottomBarIconColor,
             colorOfIcon = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else leftIconColor,
-            textColor = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else leftTextColor,
+            rightTextColor = disabledColorForTextForMainButton,
             sizeOfIcon = sizeOfLeftIcon,
             rightText = if (isRecording) leftElementSecondText else ""
         )
@@ -150,17 +153,17 @@ fun BottomElementsBar(
                 imageVector = rightIcon,
                 leftText = rightElementText,
                 colorOfIcon = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightIconColor,
-                textColor = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightTextColor,
+                leftTextColor = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightTextColor,
             )
         } else if (answeringFromFavouriteMode) {
             IconWithText(
                 modifier = secondButtonModifier,
                 leftText = rightElementText,
                 colorOfIcon = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightIconColor,
-                textColor = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightTextColor,
+                leftTextColor = if (shouldBeButtonsDisabled) disabledColorForTextForMainButton else rightTextColor,
             )
         } else {
-            TextWithIconButton(
+            TextWithIcon(
                 modifier = secondButtonModifier,
                 imageVector = rightIcon,
                 textOnButton = rightElementText,

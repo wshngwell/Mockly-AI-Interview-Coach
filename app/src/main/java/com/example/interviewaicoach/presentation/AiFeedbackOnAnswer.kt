@@ -2,7 +2,6 @@ package com.example.interviewaicoach.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,16 +24,17 @@ import com.example.interviewaicoach.R
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.AnswerAiFeedbackEntity
 import com.example.interviewaicoach.presentation.correctAnswerScreenElements.IconWithText
 import com.example.interviewaicoach.presentation.theme.aiFeedbackTextFontSize
-import com.example.interviewaicoach.presentation.theme.buttonsTextColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForAiResponseOption
-import com.example.interviewaicoach.presentation.theme.darkGreenBrushForMainButton
-import com.example.interviewaicoach.presentation.theme.greenBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.horizontalDividerColor
 import com.example.interviewaicoach.presentation.theme.horizontalPaddingOfAiFeedBackOptions
 import com.example.interviewaicoach.presentation.theme.lightGreenTextColor
 import com.example.interviewaicoach.presentation.theme.lightRedTextColor
+import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.pink
+import com.example.interviewaicoach.presentation.theme.positiveAspectsBrushForMainButton
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.questionAiFeedbackOptionsFontSize
+import com.example.interviewaicoach.presentation.theme.ratingResultBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.redBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.transparentGradientBrush
 import com.example.interviewaicoach.presentation.theme.verticalPaddingOfAiFeedBackOptions
@@ -42,7 +42,7 @@ import com.example.interviewaicoach.presentation.theme.verticalPaddingOfAiFeedBa
 
 @Preview
 @Composable
-fun ColumnScope.AiFeedbackOnAnswer(
+fun AiFeedbackOnAnswer(
     answerFromAi: AnswerAiFeedbackEntity = mockAnswerAiFeedbackEntity,
 ) {
 
@@ -58,13 +58,14 @@ fun ColumnScope.AiFeedbackOnAnswer(
                 ),
             imageVector = Icons.Filled.AutoAwesome,
             leftText = stringResource(R.string.ai_insights),
+            rightTextColor = primaryTextColor,
             colorOfIcon = pink
         )
         if (answerFromAi.ratingFromAi > 5) {
             MainAppButton(
                 modifier = Modifier
                     .clip(RoundedCornerShape(clipParamsForAiResponseOption))
-                    .background(brush = greenBrushForMainButton)
+                    .background(brush = ratingResultBrushForMainButton)
                     .padding(
                         vertical = verticalPaddingOfAiFeedBackOptions,
                         horizontal = horizontalPaddingOfAiFeedBackOptions
@@ -82,6 +83,7 @@ fun ColumnScope.AiFeedbackOnAnswer(
                         vertical = verticalPaddingOfAiFeedBackOptions,
                         horizontal = horizontalPaddingOfAiFeedBackOptions
                     ),
+                fontColor = lightRedTextColor,
                 text = stringResource(R.string.bad_answer),
                 fontSize = questionAiFeedbackOptionsFontSize,
                 fontWeight = FontWeight.SemiBold
@@ -93,7 +95,7 @@ fun ColumnScope.AiFeedbackOnAnswer(
     MainAppButton(
         modifier = Modifier
             .clip(RoundedCornerShape(clipParamsForAiResponseOption))
-            .background(brush = darkGreenBrushForMainButton)
+            .background(brush = positiveAspectsBrushForMainButton)
             .padding(
                 vertical = verticalPaddingOfAiFeedBackOptions,
                 horizontal = horizontalPaddingOfAiFeedBackOptions
@@ -109,8 +111,9 @@ fun ColumnScope.AiFeedbackOnAnswer(
 
         Text(
             text = "• $it",
-            color = buttonsTextColor,
             fontSize = aiFeedbackTextFontSize,
+            fontFamily = mainAppFontFamily,
+            color = primaryTextColor,
             fontWeight = FontWeight.Medium
         )
     }
@@ -137,7 +140,8 @@ fun ColumnScope.AiFeedbackOnAnswer(
 
         Text(
             text = "• $it",
-            color = buttonsTextColor,
+            color = primaryTextColor,
+            fontFamily = mainAppFontFamily,
             fontSize = aiFeedbackTextFontSize,
             fontWeight = FontWeight.Medium
         )

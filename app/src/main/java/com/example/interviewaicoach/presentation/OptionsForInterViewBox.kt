@@ -14,27 +14,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.presentation.theme.borderOfSelectedInterviewParam
 import com.example.interviewaicoach.presentation.theme.borderOfUnselectedInterviewParam
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
+import com.example.interviewaicoach.presentation.theme.cardColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForMainButtons
 import com.example.interviewaicoach.presentation.theme.disabledColorForTextForMainButton
-import com.example.interviewaicoach.presentation.theme.interviewParamsBoxColor
 import com.example.interviewaicoach.presentation.theme.disabledGradientBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.gradientBrushForMainButton
+import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.myBackGround
 import com.example.interviewaicoach.presentation.theme.paramsForMainButtonPadding
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.transparentGradientBrush
-import androidx.compose.ui.res.stringResource
 
 
 @Composable
@@ -68,7 +67,7 @@ fun OptionsForInterViewBox(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(clipParamsForMainButtons))
-                        .background(color = interviewParamsBoxColor)
+                        .background(color = cardColor)
                         .border(
                             width = if (currentSelectedOption == stringResource(stringId)) borderOfSelectedInterviewParam else borderOfUnselectedInterviewParam,
                             brush = if (currentSelectedOption == stringResource(stringId)) gradientBrushForMainButton else transparentGradientBrush,
@@ -80,6 +79,9 @@ fun OptionsForInterViewBox(
                 {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
+                        color = primaryTextColor,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = mainAppFontFamily,
                         text = stringResource(stringId),
                         textAlign = TextAlign.Center,
                     )

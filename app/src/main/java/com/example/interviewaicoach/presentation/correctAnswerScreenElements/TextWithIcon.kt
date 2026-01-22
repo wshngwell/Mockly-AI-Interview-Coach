@@ -17,21 +17,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.theme.BottomButtonFontSize
+import com.example.interviewaicoach.presentation.theme.appBarIconColor
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
-import com.example.interviewaicoach.presentation.theme.lightIconColor
+import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.sizeOfIcons
 import com.example.interviewaicoach.presentation.theme.widthBetweenIconAndTextInBottomButton
 
+@Preview
 @Composable
-fun TextWithIconButton(
-    modifier: Modifier,
+fun TextWithIcon(
+    modifier: Modifier = Modifier,
     imageVector: ImageVector = Icons.Outlined.BookmarkBorder,
     textOnButton: String = stringResource(R.string.save_question),
-    colorOfIcon: Color = lightIconColor,
-    textFontSize:Int = BottomButtonFontSize,
+    colorOfIcon: Color = appBarIconColor,
+    widthBetweenTextAndIcon: Dp = widthBetweenIconAndTextInBottomButton,
+    textFontSize: Int = BottomButtonFontSize,
     textColor: Color = buttonsTextColor,
 ) {
 
@@ -49,9 +54,10 @@ fun TextWithIconButton(
                 text = textOnButton,
                 color = textColor,
                 fontSize = textFontSize.sp,
+                fontFamily = mainAppFontFamily,
                 fontWeight = FontWeight.SemiBold,
             )
-            Spacer(modifier = Modifier.width(widthBetweenIconAndTextInBottomButton))
+            Spacer(modifier = Modifier.width(widthBetweenTextAndIcon))
 
             Icon(
                 modifier = Modifier.size(sizeOfIcons),

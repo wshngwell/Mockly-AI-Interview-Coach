@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,17 +27,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.example.interviewaicoach.R
-import com.example.interviewaicoach.presentation.theme.answersFontSize
+import com.example.interviewaicoach.presentation.theme.appBarIconColor
 import com.example.interviewaicoach.presentation.theme.bottomButtonSaveQuestionScreenEndPadding
 import com.example.interviewaicoach.presentation.theme.bottomButtonSaveQuestionScreenVerticalPadding
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForBottomButtonOnQuestionsScreen
-import com.example.interviewaicoach.presentation.theme.lightIconColor
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.maxRecordingTimeFontSize
 import com.example.interviewaicoach.presentation.theme.questionsWithAnswersBottomButtonsGradient
 import com.example.interviewaicoach.presentation.theme.sizeOfIcons
-import com.example.interviewaicoach.presentation.theme.unselectedBottomBarElementColor
 import com.example.interviewaicoach.presentation.theme.widthBetweenIconAndTextInBottomButton
 
 
@@ -50,9 +46,11 @@ fun IconWithText(
     imageVector: ImageVector? = null,
     leftText: String = stringResource(R.string.save_question),
     rightText: String = "",
-    colorOfIcon: Color = lightIconColor,
+    colorOfIcon: Color = appBarIconColor,
     sizeOfIcon: Dp = sizeOfIcons,
-    textColor: Color = buttonsTextColor,
+    fontWeight: FontWeight = FontWeight.SemiBold,
+    rightTextColor: Color = buttonsTextColor,
+    leftTextColor: Color = buttonsTextColor,
     sizeOfText: Int = 14,
     contentAlignment: Alignment = Alignment.Center
 ) {
@@ -81,16 +79,17 @@ fun IconWithText(
             ) {
                 Text(
                     text = leftText,
-                    color = textColor,
+                    color = leftTextColor,
+                    fontFamily = mainAppFontFamily,
                     fontSize = sizeOfText.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = fontWeight,
                 )
 
                 Text(
                     text = rightText,
                     fontFamily = mainAppFontFamily,
                     fontWeight = FontWeight.Medium,
-                    color = unselectedBottomBarElementColor,
+                    color = rightTextColor,
                     fontSize = maxRecordingTimeFontSize,
                     textAlign = TextAlign.Center
                 )

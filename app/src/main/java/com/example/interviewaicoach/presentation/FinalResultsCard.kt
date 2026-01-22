@@ -25,15 +25,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.correctAnswerScreenElements.IconWithText
+import com.example.interviewaicoach.presentation.theme.appBarIconColor
+import com.example.interviewaicoach.presentation.theme.cardColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForAiResponseOption
 import com.example.interviewaicoach.presentation.theme.clipParamsForQuestionWithAnswerBox
-import com.example.interviewaicoach.presentation.theme.greenBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.horizontalDividerColor
 import com.example.interviewaicoach.presentation.theme.horizontalPaddingOfResultScreenRating
-import com.example.interviewaicoach.presentation.theme.lightIconColor
 import com.example.interviewaicoach.presentation.theme.pink
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.questionAiFeedbackOptionsFontSize
-import com.example.interviewaicoach.presentation.theme.questionWithAnswerCardColor
+import com.example.interviewaicoach.presentation.theme.ratingResultBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.resultCardInnerPadding
 import com.example.interviewaicoach.presentation.theme.resultCardTopOuterPadding
 import com.example.interviewaicoach.presentation.theme.resultListItemsFontSize
@@ -57,7 +58,7 @@ fun FinalResultsCard(
             )
             .fillMaxWidth()
             .background(
-                color = questionWithAnswerCardColor,
+                color = cardColor,
                 shape = RoundedCornerShape(clipParamsForQuestionWithAnswerBox)
             )
             .padding(resultCardInnerPadding)
@@ -68,7 +69,8 @@ fun FinalResultsCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             IconWithText(
                 modifier = Modifier
@@ -77,13 +79,14 @@ fun FinalResultsCard(
                     ),
                 imageVector = Icons.Filled.AutoAwesome,
                 leftText = stringResource(R.string.final_points),
+                leftTextColor = primaryTextColor,
                 colorOfIcon = pink,
                 sizeOfText = resultListItemsFontSize
             )
             MainAppButton(
                 modifier = Modifier
                     .clip(RoundedCornerShape(clipParamsForAiResponseOption))
-                    .background(brush = greenBrushForMainButton)
+                    .background(brush = ratingResultBrushForMainButton)
                     .padding(
                         vertical = verticalPaddingOfAiFeedBackOptions,
                         horizontal = horizontalPaddingOfResultScreenRating
@@ -104,7 +107,8 @@ fun FinalResultsCard(
                 .fillMaxWidth(),
             imageVector = Icons.Outlined.Task,
             leftText = stringResource(R.string.learned_numberOfQuestions, numberOfQuestions),
-            colorOfIcon = lightIconColor,
+            colorOfIcon = appBarIconColor,
+            leftTextColor = primaryTextColor,
             sizeOfText = resultListItemsFontSize,
             contentAlignment = Alignment.TopStart
         )
@@ -114,11 +118,12 @@ fun FinalResultsCard(
             modifier = Modifier
                 .fillMaxWidth(),
             imageVector = Icons.Outlined.Mic,
+            leftTextColor = primaryTextColor,
             leftText = stringResource(
                 R.string.on_this_number_of_questions_answered_with_voice,
                 numberOfVoiceAnsweredQuestions
             ),
-            colorOfIcon = lightIconColor,
+            colorOfIcon = appBarIconColor,
             sizeOfText = resultListItemsFontSize,
             contentAlignment = Alignment.TopStart
         )
@@ -129,11 +134,12 @@ fun FinalResultsCard(
             modifier = Modifier
                 .fillMaxWidth(),
             imageVector = Icons.Outlined.BookmarkBorder,
+            leftTextColor = primaryTextColor,
             leftText = stringResource(
                 R.string.you_saved_this_numberOfQuestions,
                 numberOfSavedQuestions
             ),
-            colorOfIcon = lightIconColor,
+            colorOfIcon = appBarIconColor,
             sizeOfText = resultListItemsFontSize,
             contentAlignment = Alignment.TopStart
         )

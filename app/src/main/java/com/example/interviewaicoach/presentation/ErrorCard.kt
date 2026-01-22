@@ -25,20 +25,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
-import com.example.interviewaicoach.presentation.correctAnswerScreenElements.TextWithIconButton
+import com.example.interviewaicoach.presentation.correctAnswerScreenElements.TextWithIcon
 import com.example.interviewaicoach.presentation.theme.answersFontSize
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForMainButtons
-import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
-import com.example.interviewaicoach.presentation.theme.disabledColorForTextForMainButton
 import com.example.interviewaicoach.presentation.theme.gradientBrushForMainButton
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.networkErrorIconHeight
 import com.example.interviewaicoach.presentation.theme.networkErrorIconWidth
 import com.example.interviewaicoach.presentation.theme.paramsForMainButtonPadding
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.questionFontSize
 import com.example.interviewaicoach.presentation.theme.resultListItemsFontSize
-import com.example.interviewaicoach.presentation.theme.unselectedBottomBarElementColor
+import com.example.interviewaicoach.presentation.theme.secondaryTextColor
 
 @Preview
 @Composable
@@ -69,7 +68,7 @@ fun ErrorCard(
             text = stringResource(errorTextId),
             fontFamily = mainAppFontFamily,
             fontWeight = FontWeight.SemiBold,
-            color = darkThemeTextColor,
+            color = primaryTextColor,
             fontSize = questionFontSize,
             textAlign = TextAlign.Center
         )
@@ -78,13 +77,13 @@ fun ErrorCard(
             text = stringResource(errorDescriptionId),
             fontFamily = mainAppFontFamily,
             fontWeight = FontWeight.Medium,
-            color = unselectedBottomBarElementColor,
+            color = secondaryTextColor,
             fontSize = answersFontSize,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(32.dp))
         if (isFavouriteQuestionsEmptyError) {
-            TextWithIconButton(
+            TextWithIcon(
                 modifier = Modifier
                     .clip(RoundedCornerShape(clipParamsForMainButtons))
                     .background(

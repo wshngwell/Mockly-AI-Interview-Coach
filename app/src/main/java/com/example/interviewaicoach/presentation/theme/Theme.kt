@@ -2,19 +2,13 @@ package com.example.interviewaicoach.presentation.theme
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -30,9 +24,7 @@ fun InterviewAiCoachTheme(
 
     val context = LocalContext.current
 
-    val isDarkTheme = isSystemInDarkTheme()
-
-    remember { getCurrentTheme(context, isDarkTheme) }
+    remember { getCurrentTheme(context) }
 
     val colorScheme by remember(
         currentTheme.collectAsStateWithLifecycle().value.isSystemDark,
@@ -54,9 +46,9 @@ fun InterviewAiCoachTheme(
             window.statusBarColor = myBackGround.toArgb()// цвет АппБара
             window.navigationBarColor = myBackGround.toArgb() // цвет контрль панели
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
-                false // светлый или темный цвет для АппБара
+                !currentTheme.value.isSystemDark // светлый или темный цвет для АппБара
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars =
-                false // для контроль панели
+                !currentTheme.value.isSystemDark // для контроль панели
         }
     }
 }

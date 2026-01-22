@@ -27,10 +27,10 @@ import com.example.interviewaicoach.presentation.theme.beginInterviewFontSize
 import com.example.interviewaicoach.presentation.theme.chooseDirectionFontSize
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.myBackGround
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.screenBottomAdditionalPadding
 import com.example.interviewaicoach.presentation.theme.screenHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.screenTopPadding
-import com.example.interviewaicoach.presentation.viemodels.DirectionScreenViewModel
 import com.example.interviewaicoach.presentation.viemodels.GradeScreenViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -65,7 +65,12 @@ fun ChooseGradeScreen(
         event.filterIsInstance<GradeScreenViewModel.Event>().collect {
             when (it) {
                 is GradeScreenViewModel.Event.OnNavigateToQuestionScreen -> {
-                    navigator.navigate(getQuestionWithAnswersScreenDestination(directionInIt, it.gradeName)) {
+                    navigator.navigate(
+                        getQuestionWithAnswersScreenDestination(
+                            directionInIt,
+                            it.gradeName
+                        )
+                    ) {
                         launchSingleTop = true
                     }
                 }
@@ -104,16 +109,19 @@ private fun UI(
             Text(
                 text = stringResource(R.string.begin_interview),
                 fontFamily = mainAppFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = beginInterviewFontSize
+                fontWeight = FontWeight.SemiBold,
+                fontSize = beginInterviewFontSize,
+                color = primaryTextColor
+
 
             )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = stringResource(R.string.choose_your_grade),
                 fontFamily = mainAppFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = chooseDirectionFontSize
+                fontWeight = FontWeight.SemiBold,
+                fontSize = chooseDirectionFontSize,
+                color = primaryTextColor
 
             )
             Spacer(modifier = Modifier.height(20.dp))

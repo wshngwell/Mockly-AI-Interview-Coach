@@ -17,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.R
 import com.example.interviewaicoach.presentation.theme.answersFontSize
-import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
-import com.example.interviewaicoach.presentation.theme.favCategoryArrowColor
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
+import com.example.interviewaicoach.presentation.theme.secondaryTextColor
 import com.example.interviewaicoach.presentation.theme.sizeOfIcons
 
 @Preview
@@ -35,13 +36,16 @@ fun FavouriteQuestionCard(
     isExpanded: Boolean = false,
     isDeletingMode: Boolean = false,
     checked: Boolean = false,
-    textFontColor: Color = darkThemeTextColor
+    textFontColor: Color = primaryTextColor
 ) {
     Box(
         modifier = modifier
+
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (isDeletingMode) {
@@ -55,6 +59,8 @@ fun FavouriteQuestionCard(
                 text = text,
                 fontFamily = mainAppFontFamily,
                 fontWeight = FontWeight.SemiBold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
                 color = textFontColor,
                 fontSize = answersFontSize
             )
@@ -69,7 +75,7 @@ fun FavouriteQuestionCard(
                         .size(sizeOfIcons),
                     imageVector = if (isExpanded) Icons.Filled.KeyboardArrowDown else Icons.Outlined.ChevronRight,
                     contentDescription = stringResource(R.string.go_into_category),
-                    tint = favCategoryArrowColor
+                    tint = secondaryTextColor
                 )
             }
 

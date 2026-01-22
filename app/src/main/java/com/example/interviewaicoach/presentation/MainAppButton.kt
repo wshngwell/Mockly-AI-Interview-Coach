@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.interviewaicoach.presentation.theme.buttonsTextColor
 import com.example.interviewaicoach.presentation.theme.interViewButtonParamsFontSize
+import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 
 @Composable
 fun MainAppButton(
@@ -26,7 +27,8 @@ fun MainAppButton(
     ) {
         Text(
             text = text,
-            color =fontColor,
+            color = fontColor,
+            fontFamily = mainAppFontFamily,
             fontSize = fontSize.sp,
             fontWeight = fontWeight
         )

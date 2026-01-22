@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -42,18 +43,19 @@ import com.example.interviewaicoach.presentation.destinations.ChooseDirectionScr
 import com.example.interviewaicoach.presentation.destinations.FavouriteQuestionsCategoriesScreenDestination
 import com.example.interviewaicoach.presentation.destinations.FavouriteQuestionsInCategoryScreenDestination
 import com.example.interviewaicoach.presentation.paramsForInterviewScreens.getChooseGradeScreenDestination
+import com.example.interviewaicoach.presentation.theme.cardColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForQuestionWithAnswerBox
-import com.example.interviewaicoach.presentation.theme.favCategoryArrowColor
 import com.example.interviewaicoach.presentation.theme.favouriteQuestionCardCategoryHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.horizontalDividerVerticalPadding
 import com.example.interviewaicoach.presentation.theme.horizontalFavQuestionsCardPadding
 import com.example.interviewaicoach.presentation.theme.myBackGround
+import com.example.interviewaicoach.presentation.theme.questionFavouriteCardHeight
 import com.example.interviewaicoach.presentation.theme.questionWIthAnswerCardInnerPadding
 import com.example.interviewaicoach.presentation.theme.questionWIthAnswerCardTopOuterPadding
-import com.example.interviewaicoach.presentation.theme.questionWithAnswerCardColor
 import com.example.interviewaicoach.presentation.theme.screenBottomAdditionalPadding
 import com.example.interviewaicoach.presentation.theme.screenHorizontalPadding
 import com.example.interviewaicoach.presentation.theme.screenTopPadding
+import com.example.interviewaicoach.presentation.theme.secondaryTextColor
 import com.example.interviewaicoach.presentation.theme.verticalFavQuestionCardPadding
 import com.example.interviewaicoach.presentation.viemodels.FavouriteQuestionsInCategoryScreenViewModel
 import com.example.interviewaicoach.presentation.viemodels.FavouriteQuestionsInCategoryScreenViewModel.Event
@@ -159,6 +161,7 @@ private fun UI(
             text = state.categoryName,
             onLeftIconClicked = { intent(OnGoBackIconClicked) },
             shouldBeRightIconButton = true,
+            shouldBeRightIconClicked = !state.isEmptyFavouriteList,
             leftIcon = if (state.isDeletingMode) Icons.Outlined.Delete else Icons.AutoMirrored.Outlined.ArrowBack,
             rightIcon = if (state.isDeletingMode) Icons.Outlined.Done else Icons.Outlined.MoreVert,
             isExpandedDropDownMenu = expanded,
@@ -181,7 +184,10 @@ private fun UI(
             onDeleteSelectedItems = {
                 intent(Intent.DeleteSelectedItems)
             },
-            isDeletingMode = state.isDeletingMode,
+            isDeletingMode =
+                if (state.isEmptyFavouriteList) false
+                else if (state.isDeletingMode) true
+                else false,
             countOfSelectedQuestions = state.countOfSelectedQuestions
         )
         if (state.isEmptyFavouriteList) {
@@ -376,7 +382,7 @@ private fun LazyListScope.cardForGrade(
                 text = stringResource(gradeTextRes),
                 shouldBeArrowInTheEnd = true,
                 isExpanded = isExpanded,
-                textFontColor = favCategoryArrowColor
+                textFontColor = secondaryTextColor
             )
         }
         items(
@@ -393,8 +399,10 @@ private fun LazyListScope.cardForGrade(
                             bottom = horizontalDividerVerticalPadding
                         )
                         .fillMaxWidth()
+
                         .clip(RoundedCornerShape(clipParamsForQuestionWithAnswerBox))
-                        .background(color = questionWithAnswerCardColor)
+                        .height(questionFavouriteCardHeight)
+                        .background(color = cardColor)
                         .clickable {
                             if (isDeletingMode) {
                                 onCheckBoxClicked(it)

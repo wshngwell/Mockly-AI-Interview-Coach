@@ -1,16 +1,15 @@
 package com.example.interviewaicoach.presentation.theme
 
 import android.content.Context
-import com.example.interviewaicoach.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 
-enum class ThemeType(val textResources: Int) {
-    LIGHT(textResources = R.string.white_option),
-    DARK(textResources = R.string.black_option),
-    SYSTEM(textResources = R.string.system_option)
+enum class ThemeType {
+    LIGHT,
+    DARK,
+
 }
 
 data class ThemeState(
@@ -22,10 +21,7 @@ data class ThemeState(
 private val _currentTheme = MutableStateFlow(ThemeState())
 val currentTheme = _currentTheme.asStateFlow()
 
-private fun updateCurrentThemeMode(
-    themeType: ThemeType,
-    isDarkTheme: Boolean
-) {
+private fun updateCurrentThemeMode(themeType: ThemeType) {
     when (themeType) {
         ThemeType.LIGHT -> {
             _currentTheme.update {
@@ -44,22 +40,12 @@ private fun updateCurrentThemeMode(
                 )
             }
         }
-
-        ThemeType.SYSTEM -> {
-            _currentTheme.update {
-                it.copy(
-                    themeType = ThemeType.SYSTEM,
-                    isSystemDark = isDarkTheme
-                )
-            }
-        }
     }
 }
 
 fun saveCurrentTheme(
     context: Context,
     themeType: ThemeType,
-    isDarkTheme: Boolean
 ) {
     val sharedPref =
         context.applicationContext.getSharedPreferences(
@@ -70,13 +56,12 @@ fun saveCurrentTheme(
         putString(THEME_TYPE_KEY, themeType.name)
         apply()
     }
-    updateCurrentThemeMode(themeType, isDarkTheme)
+    updateCurrentThemeMode(themeType)
 }
 
 
 fun getCurrentTheme(
     context: Context,
-    isDarkTheme: Boolean
 ) {
     val sharedPref =
         context.applicationContext.getSharedPreferences(
@@ -86,9 +71,9 @@ fun getCurrentTheme(
 
     val themeType = sharedPref.getString(THEME_TYPE_KEY, null)?.let { themeTypeName ->
         ThemeType.entries.find { it.name == themeTypeName }
-    } ?: ThemeType.DARK
+    } ?: ThemeType.LIGHT
 
-    updateCurrentThemeMode(themeType = themeType, isDarkTheme)
+    updateCurrentThemeMode(themeType = themeType)
 
 }
 

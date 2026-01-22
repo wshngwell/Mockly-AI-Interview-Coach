@@ -21,18 +21,18 @@ import androidx.compose.ui.unit.dp
 import com.example.interviewaicoach.domain.entities.LoadingException
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.AnswerAiFeedbackEntity
 import com.example.interviewaicoach.presentation.theme.answersFontSize
+import com.example.interviewaicoach.presentation.theme.cardColor
 import com.example.interviewaicoach.presentation.theme.clipParamsForQuestionWithAnswerBox
-import com.example.interviewaicoach.presentation.theme.darkThemeTextColor
 import com.example.interviewaicoach.presentation.theme.horizontalDividerColor
 import com.example.interviewaicoach.presentation.theme.horizontalDividerVerticalPadding
 import com.example.interviewaicoach.presentation.theme.mainAppFontFamily
 import com.example.interviewaicoach.presentation.theme.numberAndTopicOfQuestionBottomPadding
-import com.example.interviewaicoach.presentation.theme.numberAndTopicOfQuestionColor
 import com.example.interviewaicoach.presentation.theme.numberAndTopicOfQuestionFontSize
+import com.example.interviewaicoach.presentation.theme.primaryTextColor
 import com.example.interviewaicoach.presentation.theme.questionFontSize
 import com.example.interviewaicoach.presentation.theme.questionWIthAnswerCardInnerPadding
 import com.example.interviewaicoach.presentation.theme.questionWIthAnswerCardTopOuterPadding
-import com.example.interviewaicoach.presentation.theme.questionWithAnswerCardColor
+import com.example.interviewaicoach.presentation.theme.secondaryTextColor
 
 @Preview
 @Composable
@@ -63,7 +63,7 @@ fun ColumnScope.QuestionWithAnswerCard(
             .fillMaxWidth()
             .weight(1f)
             .background(
-                color = questionWithAnswerCardColor,
+                color = cardColor,
                 shape = RoundedCornerShape(
                     topStart = clipParamsForQuestionWithAnswerBox,
                     topEnd = clipParamsForQuestionWithAnswerBox
@@ -105,7 +105,7 @@ fun ColumnScope.QuestionWithAnswerCard(
                         text = if (!answeringFromFavouriteMode) "#$currentNumberOfQuestion $topicOfQuestionText" else topicOfQuestionText,
                         fontFamily = mainAppFontFamily,
                         fontWeight = FontWeight.SemiBold,
-                        color = numberAndTopicOfQuestionColor,
+                        color = secondaryTextColor,
                         fontSize = numberAndTopicOfQuestionFontSize
 
                     )
@@ -126,7 +126,7 @@ fun ColumnScope.QuestionWithAnswerCard(
                         text = questionText,
                         fontFamily = mainAppFontFamily,
                         fontWeight = FontWeight.SemiBold,
-                        color = darkThemeTextColor,
+                        color = primaryTextColor,
                         fontSize = questionFontSize
                     )
                 }
@@ -161,7 +161,7 @@ fun ColumnScope.QuestionWithAnswerCard(
                                 text = correctAnswer,
                                 fontFamily = mainAppFontFamily,
                                 fontWeight = FontWeight.Medium,
-                                color = darkThemeTextColor,
+                                color = primaryTextColor,
                                 fontSize = answersFontSize
                             )
                         }
@@ -190,7 +190,7 @@ fun ColumnScope.QuestionWithAnswerCard(
                             text = correctAnswer,
                             fontFamily = mainAppFontFamily,
                             fontWeight = FontWeight.Medium,
-                            color = darkThemeTextColor,
+                            color = primaryTextColor,
                             fontSize = answersFontSize
                         )
                     }

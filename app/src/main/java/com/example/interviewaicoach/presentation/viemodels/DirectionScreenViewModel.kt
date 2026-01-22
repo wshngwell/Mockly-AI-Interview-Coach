@@ -24,12 +24,15 @@ class DirectionScreenViewModel : ViewModel() {
     sealed interface Event {
         data class OnNavigateToGradeScreen(val directionInIt: String) : Event
         data object OnNavigateToFavouriteQuestionScreen : Event
+
+        data object OnSettingsIconClicked : Event
     }
 
     sealed interface Intent {
         data class OnChangeCurrentDirectionInIt(val directionInIt: String) : Intent
         data object OnConfirmDirectionInIt : Intent
         data object OnFavouriteIconClicked : Intent
+        data object OnSettingsIconClicked : Intent
     }
 
     fun sendIntent(intent: Intent) {
@@ -45,6 +48,8 @@ class DirectionScreenViewModel : ViewModel() {
             }
 
             Intent.OnFavouriteIconClicked -> _event.emit(OnNavigateToFavouriteQuestionScreen)
+
+            Intent.OnSettingsIconClicked -> _event.emit(Event.OnSettingsIconClicked)
         }
     }
 
