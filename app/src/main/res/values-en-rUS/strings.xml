@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">InterviewAiCoach</string>
+    <string name="app_name">Mockly</string>
     <string name="my_questions">My questions</string>
     <string name="choose_the_direction">Choose direction:</string>
     <string name="begin_interview">Begin Interview</string>

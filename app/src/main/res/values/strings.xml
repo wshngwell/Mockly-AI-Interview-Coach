@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InterviewAiCoach</string>
+    <string name="app_name">Mockly</string>
     <string name="frontend" translatable="false">Frontend</string>
     <string name="my_questions">Мои вопросы</string>
     <string name="backend" translatable="false">Backend</string>
