@@ -1,8 +1,9 @@
 <p align="center">
-  <img src="screenshots/choose_direction_screen.png" alt="Mockly Logo" width="200">
+  <img src="screenshots/logoIcon.png" alt="Mockly Logo" width="200">
 </p>
 
-# Mockly: AI Interview Coach
+<h1 align="center">Mockly: AI Interview Coach</h1>
+
 [![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/wshngwell/Mockly-AI-Interview-Coach)
 
 Mockly is an AI-powered Android application designed to help you prepare for and ace your technical interviews. Built with Kotlin and Jetpack Compose, the app provides a realistic simulation of an interview session where you can practice answering questions for various IT roles and experience levels. Get instant, intelligent feedback on your voice responses and track your progress.
@@ -12,16 +13,16 @@ This project is built using modern Android development practices and libraries.
 ## 📱 Скриншоты (Screenshots)
 <p align="center"> <img src="screenshots/choose_direction_screen.png" width="200" alt="Выбор
 направления"> <img src="screenshots/choose_grade_screen.png" width="200" alt="Выбор грейда">
-<img src="screenshots/loadingQuestionScreen.png" width="200" alt="Загрузка вопроса"> </p>
-<img src="screenshots/questionScreen.png" width="200" alt="Вопрос загружен"> </p>
-<img src="screenshots/correctAnswerScreen.png" width="200" alt="Правильный ответ показан"> </p>
-<img src="screenshots/errorScreen.png" width="200" alt="Обработка сетевой ошибки"> </p>
-<img src="screenshots/recordingVoiceScreen.png" width="200" alt="Идет запись"> </p>
-<img src="screenshots/aiFeedbackScreen.png" width="200" alt="ИИ фидбек показан"> </p>
-<img src="screenshots/resultsScreen.png" width="200" alt="Экран результатов"> </p>
-<img src="screenshots/favouriteCategoriesScreen.png" width="200" alt="Экран избранных категорий "> </p>
-<img src="screenshots/favouriteQuestionsScreen.png" width="200" alt="Экран избранных вопросов "> </p>
-<img src="screenshots/deleteFromFavouriteScreen.png" width="200" alt="Экран удаления избранных вопросов "> </p>
+<img src="screenshots/loadingQuestionScreen.png" width="200" alt="Загрузка вопроса"> 
+<img src="screenshots/questionScreen.png" width="200" alt="Вопрос загружен"> 
+<img src="screenshots/correctAnswerScreen.png" width="200" alt="Правильный ответ показан"> 
+<img src="screenshots/errorScreen.png" width="200" alt="Обработка сетевой ошибки"> 
+<img src="screenshots/recordingVoiceScreen.png" width="200" alt="Идет запись"> 
+<img src="screenshots/aiFeedbackScreen.png" width="200" alt="ИИ фидбек показан"> 
+<img src="screenshots/resultsScreen.png" width="200" alt="Экран результатов"> 
+<img src="screenshots/favouriteCategoriesScreen.png" width="200" alt="Экран избранных категорий "> 
+<img src="screenshots/favouriteQuestionsScreen.png" width="200" alt="Экран избранных вопросов "> 
+<img src="screenshots/deleteFromFavouriteScreen.png" width="200" alt="Экран удаления избранных вопросов "> 
 <img src="screenshots/settingsScreen.png" width="200" alt="Экран настроек"> </p>
 
 ## ✨ Основные возможности / Features
