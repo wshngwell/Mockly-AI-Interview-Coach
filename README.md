@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="screenshots/logoIcon.png" alt="Mockly Logo" width="300" height="300" style="margin-bottom: 0px;">
+  <img src="screenshots/logoIcon.png" alt="Mockly Logo" width="400" height="400" style="margin-bottom: 0px;">
   <h2 style="margin-top: 5px; border-bottom: none;">Mockly: AI Interview Coach</h2>
 </div>
 
