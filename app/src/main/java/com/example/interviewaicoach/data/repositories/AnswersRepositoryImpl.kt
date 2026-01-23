@@ -13,8 +13,8 @@ import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.CorrectAnswerEntity
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.repositories.AnswerRepository
-import com.example.interviewaicoach.presentation.GsonUtil.fromJson
-import com.example.interviewaicoach.utils.myLog
+import com.example.interviewaicoach.presentation.utils.GsonUtil.fromJson
+import com.example.interviewaicoach.presentation.utils.myLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

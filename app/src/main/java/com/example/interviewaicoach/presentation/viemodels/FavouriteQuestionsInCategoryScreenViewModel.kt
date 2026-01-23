@@ -6,12 +6,11 @@ import com.example.interviewaicoach.domain.SingleFlowEvent
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.DeleteQuestionFromFavouriteUseCase
 import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.GetFavouriteQuestionsUseCase
-import com.example.interviewaicoach.presentation.FavouriteQuestionsGradeUiModel
-import com.example.interviewaicoach.presentation.GradeUIModel
-import com.example.interviewaicoach.presentation.QuestionEntityWithChackBoxUiModel
-import com.example.interviewaicoach.presentation.convertToString
+import com.example.interviewaicoach.presentation.screens.favouriteQuestionsScreen.FavouriteQuestionsGradeUiModel
+import com.example.interviewaicoach.presentation.screens.chooseGradeScreen.GradeUIModel
+import com.example.interviewaicoach.presentation.screens.favouriteQuestionsScreen.QuestionEntityWithCheckBoxUiModel
+import com.example.interviewaicoach.presentation.utils.convertToString
 import com.example.interviewaicoach.presentation.viemodels.FavouriteQuestionsInCategoryScreenViewModel.Event.OnNavigateToQuestionWithAnswerScreen
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -288,9 +287,9 @@ class FavouriteQuestionsInCategoryScreenViewModel(
         }
 
     private fun checkBoxChangingStateInList(
-        questionsWithCheckBoxList: List<QuestionEntityWithChackBoxUiModel>,
+        questionsWithCheckBoxList: List<QuestionEntityWithCheckBoxUiModel>,
         questionEntity: QuestionEntity,
-    ): List<QuestionEntityWithChackBoxUiModel> {
+    ): List<QuestionEntityWithCheckBoxUiModel> {
         return questionsWithCheckBoxList.map {
             if (it.questionEntity == questionEntity) {
                 it.copy(isChecked = it.isChecked.not())
@@ -311,7 +310,7 @@ class FavouriteQuestionsInCategoryScreenViewModel(
         val filteredListOfQuestionsByCategoryAndGrade = filteredListOfQuestionsByCategory
             .filter { questionEntity -> questionEntity.gradeName == gradeUIModel.convertToString() }
             .map { questionEntity ->
-                QuestionEntityWithChackBoxUiModel(
+                QuestionEntityWithCheckBoxUiModel(
                     questionEntity = questionEntity,
                     isChecked = false
                 )

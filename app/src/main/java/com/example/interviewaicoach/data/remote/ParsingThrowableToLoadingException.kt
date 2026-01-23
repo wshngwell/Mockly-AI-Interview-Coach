@@ -1,7 +1,7 @@
 package com.example.interviewaicoach.data.remote
 
 import com.example.interviewaicoach.domain.entities.LoadingException
-import com.example.interviewaicoach.utils.myLog
+import com.example.interviewaicoach.presentation.utils.myLog
 import retrofit2.HttpException
 import java.io.IOException
 

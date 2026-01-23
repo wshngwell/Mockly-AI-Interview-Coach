@@ -143,8 +143,6 @@ dependencies {
     //SplashScreen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    //Vosk
-    implementation("com.alphacephei:vosk-android:0.3.47")
-
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 }

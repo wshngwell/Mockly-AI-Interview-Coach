@@ -10,7 +10,7 @@ import com.example.interviewaicoach.domain.entities.LoadingException
 import com.example.interviewaicoach.domain.entities.TResult
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
 import com.example.interviewaicoach.domain.repositories.LoadQuestionRepository
-import com.example.interviewaicoach.utils.myLog
+import com.example.interviewaicoach.presentation.utils.myLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

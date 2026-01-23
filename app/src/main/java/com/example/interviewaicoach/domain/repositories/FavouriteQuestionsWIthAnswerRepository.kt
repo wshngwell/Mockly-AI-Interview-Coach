@@ -12,8 +12,6 @@ interface FavouriteQuestionsWIthAnswerRepository {
         isSavedByUser: Boolean
     )
 
-    val loadCategoriesNamesFromFavouriteQuestions: SharedFlow<List<String>>
-
     suspend fun deleteFromFavouriteQuestion(listOfQuestionNames: List<String>)
 
 }

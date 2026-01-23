@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface AnswerRepository {
 
     fun loadCorrectAnswer(questionEntity: QuestionEntity): Flow<TResult<CorrectAnswerEntity, LoadingException>>
-     fun postUserAnswer(
+    fun postUserAnswer(
         questionEntity: QuestionEntity,
         userAnswer: String,
         correctAnswerEntity: CorrectAnswerEntity

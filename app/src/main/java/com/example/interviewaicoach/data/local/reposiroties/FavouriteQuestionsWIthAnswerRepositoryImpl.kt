@@ -40,24 +40,6 @@ class FavouriteQuestionsWIthAnswerRepositoryImpl(
                 replay = 1
             )
 
-    override val loadCategoriesNamesFromFavouriteQuestions: SharedFlow<List<String>> =
-        questionsDao.getAllCategoriesFromDb()
-            .map { listOfQuestionsWithAnswers ->
-                listOfQuestionsWithAnswers.map {
-                    it
-                }
-            }
-            .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
-            .distinctUntilChanged()
-            .shareIn(
-                scope = scope,
-                started = SharingStarted.WhileSubscribed(
-                    stopTimeoutMillis = 10_000,
-                    replayExpirationMillis = 0
-                ),
-                replay = 1
-            )
-
     override suspend fun addToFavouriteQuestion(
         questionEntity: QuestionEntity,
         isSavedByUser: Boolean,

@@ -20,7 +20,7 @@ import com.example.interviewaicoach.domain.usecases.recordSpeechUseCases.StopRec
 import com.example.interviewaicoach.domain.usecases.recordSpeechUseCases.TranscribeAudioUseCase
 import com.example.interviewaicoach.presentation.viemodels.QuestionsWithAnswersViewModel.Event.NavigateToResultsScreen
 import com.example.interviewaicoach.presentation.viemodels.QuestionsWithAnswersViewModel.State.ErrorType
-import com.example.interviewaicoach.utils.myLog
+import com.example.interviewaicoach.presentation.utils.myLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

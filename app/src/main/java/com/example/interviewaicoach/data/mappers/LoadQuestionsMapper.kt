@@ -7,7 +7,7 @@ import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatMessageForTex
 import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatRequestTextDto
 import com.example.interviewaicoach.data.remote.dto.dtoForText.ChatStreamChunkDto
 import com.example.interviewaicoach.domain.entities.questionsWithAnswersEntities.QuestionEntity
-import com.example.interviewaicoach.presentation.GsonUtil.fromJson
+import com.example.interviewaicoach.presentation.utils.GsonUtil.fromJson
 
 fun String.mapToQuestionEntity(
     categoryName: String,

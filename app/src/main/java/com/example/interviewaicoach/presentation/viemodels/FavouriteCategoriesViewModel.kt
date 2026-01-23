@@ -3,11 +3,9 @@ package com.example.interviewaicoach.presentation.viemodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.interviewaicoach.domain.SingleFlowEvent
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.GetFavouriteCategoriesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class FavouriteCategoriesViewModel : ViewModel() {
 

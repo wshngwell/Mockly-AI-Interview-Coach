@@ -6,6 +6,6 @@ import com.example.interviewaicoach.domain.repositories.AnswerRepository
 class LoadCorrectAnswerUseCase(
     private val answerRepository: AnswerRepository
 ) {
-     operator fun invoke(questionEntity: QuestionEntity) =
+    operator fun invoke(questionEntity: QuestionEntity) =
         answerRepository.loadCorrectAnswer(questionEntity)
 }

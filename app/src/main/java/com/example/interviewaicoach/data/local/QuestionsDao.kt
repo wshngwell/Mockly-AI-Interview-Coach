@@ -16,9 +16,6 @@ interface QuestionsDao {
         gradeName: String
     ): List<String>
 
-    @Query("SELECT DISTINCT categoryName FROM QuestionDbModel WHERE isSavedByUser = 1")
-    fun getAllCategoriesFromDb(): Flow<List<String>>
-
     @Query("SELECT DISTINCT * FROM QuestionDbModel WHERE isSavedByUser = 1")
     fun getAllOnlyUserSavedQuestionsFromDb(): Flow<List<QuestionDbModel>>
 

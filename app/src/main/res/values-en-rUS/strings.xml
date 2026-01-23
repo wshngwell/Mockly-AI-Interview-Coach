@@ -34,7 +34,7 @@
     <string name="you_saved_this_numberOfQuestions">You saved %1$d questions</string>
     <string name="onMainScreen">Home</string>
     <string name="retry">Try again</string>
-    <string name="retry_answer">Retry</string>
+    <string name="retry_answer">Repeat</string>
     <string name="retry_error">Retry</string>
     <string name="empty_fav_list_heading">You haven\'t got any saved questions</string>
     <string name="empty_fav_list_desc">Begin interview right now and save all difficult questions</string>

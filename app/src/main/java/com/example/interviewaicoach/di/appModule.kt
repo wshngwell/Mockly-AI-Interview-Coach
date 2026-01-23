@@ -17,7 +17,6 @@ import com.example.interviewaicoach.domain.repositories.RecordAudioRepository
 import com.example.interviewaicoach.domain.repositories.SpeechToTextRepository
 import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.AddQuestionToFavouriteUseCase
 import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.DeleteQuestionFromFavouriteUseCase
-import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.GetFavouriteCategoriesUseCase
 import com.example.interviewaicoach.domain.usecases.favouriteQuestionsUseCases.GetFavouriteQuestionsUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.LoadCorrectAnswerUseCase
 import com.example.interviewaicoach.domain.usecases.loadAnswersAndQuestionsUseCase.LoadQuestionUseCase
@@ -105,11 +104,7 @@ val appModule = module {
             answerRepository = get<AnswerRepository>()
         )
     }
-    factory<GetFavouriteCategoriesUseCase> {
-        GetFavouriteCategoriesUseCase(
-            favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
-        )
-    }
+
     factory<GetFavouriteQuestionsUseCase> {
         GetFavouriteQuestionsUseCase(
             favouriteQuestionsWIthAnswerRepository = get<FavouriteQuestionsWIthAnswerRepository>()
