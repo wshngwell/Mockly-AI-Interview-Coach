@@ -1,3 +1,76 @@
 <resources>
-    <string name="app_name">InterviewAiCoach</string>
+    <string name="app_name">Mockly</string>
+    <string name="frontend" translatable="false">Frontend</string>
+    <string name="my_questions">Мои вопросы</string>
+    <string name="backend" translatable="false">Backend</string>
+    <string name="android" translatable="false">Android</string>
+    <string name="ios" translatable="false">iOS</string>
+    <string name="flutter" translatable="false">Flutter</string>
+    <string name="devops" translatable="false">DevOps</string>
+    <string name="ux_ui" translatable="false">UX/UI</string>
+    <string name="marketing" translatable="false">Marketing</string>
+    <string name="choose_the_direction">Выберите направление :</string>
+    <string name="begin_interview">Начните собеседование</string>
+    <string name="choose_your_grade">Выберите свой уровень:</string>
+    <string name="next_button_text">Далее</string>
+    <string name="begin_interview_text">Начать собеседование</string>
+    <string name="junior" translatable="false">Junior</string>
+    <string name="middle" translatable="false">Middle</string>
+    <string name="senior" translatable="false">Senior</string>
+    <string name="lead" translatable="false">Lead</string>
+    <string name="exit_from_interview">Выход из интервью</string>
+    <string name="delete_quest_from_fav">Удалить вопросы из избранного</string>
+    <string name="go_into_category">Попасть в категорию</string>
+    <string name="save_question">Сохранить</string>
+    <string name="delete_question">Удалить</string>
+    <string name="next_question">Далее</string>
+    <string name="max_recording_time">Макс. 2 мин</string>
+    <string name="see_answer">Показать ответ</string>
+    <string name="record_voice">Записать голос</string>
+    <string name="send">Отправить</string>
+    <string name="ai_insights">ИИ-обзор</string>
+    <string name="good_answer">Хороший ответ</string>
+    <string name="good_part">Положительные моменты</string>
+    <string name="negative_part">Отрицательные моменты</string>
+    <string name="bad_answer">Плохой ответ</string>
+    <string name="results_icon">Иконка результата</string>
+    <string name="interview_completed">Собеседование пройдено</string>
+    <string name="final_text">Вы отлично постарались, смотрите Ваши результаты.</string>
+    <string name="final_points">Итоговая оценка от AI</string>
+    <string name="system">Системные</string>
+    <string name="points_from_10" translatable="false">%1$d/10</string>
+    <string name="learned_numberOfQuestions">Всего изучено %1$d вопросов</string>
+    <string name="language">Язык</string>
+    <string name="russian" translatable="false">Русский</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="on_this_number_of_questions_answered_with_voice">На %1$d вопроса Вы ответили голосом</string>
+    <string name="you_saved_this_numberOfQuestions">Вы сохранили себе %1$d вопросов</string>
+    <string name="onMainScreen">На главную</string>
+    <string name="retry">Пройти еще раз</string>
+    <string name="retry_answer">Ответить заново</string>
+
+    <string name="retry_error">Повторить</string>
+    <string name="empty_fav_list_heading">Нет сохраненных вопросов</string>
+    <string name="empty_fav_list_desc">Начните собеседование прямо сейчас и сохраняйте сложные вопросы.</string>
+    <string name="saved_questions">Сохраненные вопросы</string>
+    <string name="settings">Настройки</string>
+    <string name="try_again">Попробовать еще</string>
+    <string name="close">Закрыть</string>
+    <string name="error">Ошибка</string>
+    <string name="ai_error">Возникла ошибка во время генерации со стороны ИИ.</string>
+    <string name="mic_permission_title">Разрешите доступ к микрофону</string>
+    <string name="mic_permission_descr">Для записи вашего ответа необходим доступ к микрофону устройства</string>
+    <string name="confirm_permission">Разрешить</string>
+    <string name="not_now">Не сейчас</string>
+    <string name="network_error">Соединение отсутствует</string>
+    <string name="other_error">Ошибка</string>
+    <string name="speech_error">Ошибка распознавания голоса</string>
+    <string name="error_desc">Возникла определенная ошибка, вы можете попробовать еще раз или выйти из режима интервью</string>
+    <string name="generation_error">Ошибка генерации</string>
+    <string name="generationError_desc">Нажмите «Повторить» или перезапустите собеседование.</string>
+    <string name="networkError_desc">Подключитесь к сети, чтобы продолжить..</string>
+    <string name="generation_error_icon">Иконка ошибки генерации</string>
+    <string name="choose">Выбрать</string>
+    <string name="english" translatable="false">English</string>
+    <string name="delete_all">Удалить все</string>
 </resources>

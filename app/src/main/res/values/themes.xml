@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.InterviewAiCoach" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.InterviewAiCoach.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#0D0D0D</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/man</item>
+        <item name="postSplashScreenTheme">@style/Theme.InterviewAiCoach</item>
+    </style>
 </resources>
