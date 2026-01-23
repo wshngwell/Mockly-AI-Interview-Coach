@@ -11,16 +11,18 @@ This project is built using modern Android development practices and libraries.
 
 ## 📱 Скриншоты (Screenshots)
 <p align="center"> <img src="screenshots/choose_direction_screen.png" width="200" alt="Выбор
-направления"> <img src="screenshots/choose_direction_screen.png" width="200" alt="Выбор грейда">
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Вопрос загружен"> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Правильный ответ показан"> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Идет запись"> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="ИИ фидбек показан"> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Экран результатов"> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Экран избранных категорий "> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Экран избранных вопросов "> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Экран удаления избранных вопросов "> </p>
-<img src="screenshots/choose_direction_screen.png" width="200" alt="Обработка сетевой ошибки"> </p>
+направления"> <img src="screenshots/choose_grade_screen.png" width="200" alt="Выбор грейда">
+<img src="screenshots/loadingQuestionScreen.png" width="200" alt="Загрузка вопроса"> </p>
+<img src="screenshots/questionScreen.png" width="200" alt="Вопрос загружен"> </p>
+<img src="screenshots/correctAnswerScreen.png" width="200" alt="Правильный ответ показан"> </p>
+<img src="screenshots/errorScreen.png" width="200" alt="Обработка сетевой ошибки"> </p>
+<img src="screenshots/recordingVoiceScreen.png" width="200" alt="Идет запись"> </p>
+<img src="screenshots/aiFeedbackScreen.png" width="200" alt="ИИ фидбек показан"> </p>
+<img src="screenshots/resultsScreen.png" width="200" alt="Экран результатов"> </p>
+<img src="screenshots/favouriteCategoriesScreen.png" width="200" alt="Экран избранных категорий "> </p>
+<img src="screenshots/favouriteQuestionsScreen.png" width="200" alt="Экран избранных вопросов "> </p>
+<img src="screenshots/deleteFromFavouriteScreen.png" width="200" alt="Экран удаления избранных вопросов "> </p>
+<img src="screenshots/settingsScreen.png" width="200" alt="Экран настроек"> </p>
 
 ## ✨ Основные возможности / Features
 

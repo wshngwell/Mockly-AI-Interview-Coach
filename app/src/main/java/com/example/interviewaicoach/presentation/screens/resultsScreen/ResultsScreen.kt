@@ -200,7 +200,7 @@ private fun UI(
             )
 
             FinalResultsCard(
-                averageScore = if (state.countsOfQuestions == 0) 0 else state.pointsSum / state.countsOfQuestions,
+                averageScore = if (state.countsOfQuestions == 0) 0 else state.pointsSum / state.numberOfVoiceAnsweredQuestions,
                 numberOfSavedQuestions = state.numberOfSavedQuestions,
                 numberOfVoiceAnsweredQuestions = state.numberOfVoiceAnsweredQuestions,
                 numberOfQuestions = state.countsOfQuestions
