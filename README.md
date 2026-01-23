@@ -1,7 +1,7 @@
-<p align="center">
-  <img src="screenshots/logoIcon.png" alt="Mockly Logo" width="100">
-</p>
-<h1 align="center">Mockly: AI Interview Coach</h1>
+<div align="center">
+  <img src="screenshots/logoIcon.png" alt="Mockly Logo" width="150">
+  <h1>Mockly: AI Interview Coach</h1>
+</div>
 
 [![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/wshngwell/Mockly-AI-Interview-Coach)
 
