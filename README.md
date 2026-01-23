@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="screenshots/logoIcon.png" alt="Mockly Logo" width="150">
-  <h1>Mockly: AI Interview Coach</h1>
+  <img src="screenshots/logoIcon.png" alt="Mockly Logo" width="150" style="margin-bottom: 0px;">
+  <h2 style="margin-top: 5px; border-bottom: none;">Mockly: AI Interview Coach</h2>
 </div>
 
 [![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/wshngwell/Mockly-AI-Interview-Coach)
