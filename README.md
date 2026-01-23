@@ -78,7 +78,7 @@ To build and run the project locally, follow these steps:
 
 4.  Add your OpenRouter API key to the `local.properties` file:
     ```properties
-    apikey="Bearer YOUR_OPENROUTER_API_KEY"
+    apikey="YOUR_OPENROUTER_API_KEY"
     ```
 5.  Open the project in Android Studio and sync the Gradle files.
 
