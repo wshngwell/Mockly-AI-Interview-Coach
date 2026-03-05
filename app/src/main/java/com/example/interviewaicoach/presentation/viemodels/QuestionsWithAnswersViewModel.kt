@@ -218,7 +218,6 @@ class QuestionsWithAnswersViewModel(
                                 )
                             }
 
-
                             return@launch
                         }
 

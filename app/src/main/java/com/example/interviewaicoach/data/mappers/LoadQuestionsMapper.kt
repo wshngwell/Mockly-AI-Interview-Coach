@@ -147,7 +147,11 @@ fun retrievingContentFromString(line: String): String {
     return if (line.startsWith("data: ") && !line.contains("[DONE]")) {
         val jsonString = line.removePrefix("data: ")
 
-        val chunk = jsonString.fromJson<ChatStreamChunkDto>()
-        chunk.choices[0].delta.content ?: ""
+        try {
+            val chunk = jsonString.fromJson<ChatStreamChunkDto>()
+            chunk.choices.getOrNull(0)?.delta?.content ?: ""
+        } catch (e: Exception) {
+            ""
+        }
     } else ""
 }

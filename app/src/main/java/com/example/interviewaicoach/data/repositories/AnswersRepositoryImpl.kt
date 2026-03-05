@@ -66,7 +66,7 @@ class AnswersRepositoryImpl(
             val jsonString = line.removePrefix("data: ")
 
             val chunk = jsonString.fromJson<ChatStreamChunkDto>()
-            chunk.choices[0].delta.content ?: ""
+            chunk.choices.getOrNull(0)?.delta?.content ?: ""
         } else ""
     }
 
